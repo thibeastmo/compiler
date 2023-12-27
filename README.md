@@ -45,7 +45,7 @@ To test code completion it will complete these words:
 
 
 To test errors:
-  - Create a line without ';' at the end to get notified that each line must end with ';'
+  - Create a line without ';', '{' or '}' at the end to get notified that each line must end with ';'
 
 
 To test warnings:
