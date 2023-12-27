@@ -33,5 +33,20 @@ It also includes an End-to-End test.
 - Select `Launch Client` from the drop down (if it is not already).
 - Press ▷ to run the launch config (F5).
 - In the [Extension Development Host](https://code.visualstudio.com/api/get-started/your-first-extension#:~:text=Then%2C%20inside%20the%20editor%2C%20press%20F5.%20This%20will%20compile%20and%20run%20the%20extension%20in%20a%20new%20Extension%20Development%20Host%20window.) instance of VSCode, open a document in 'plain text' language mode.
-  - Type `j` or `t` to see `Javascript` and `TypeScript` completion.
-  - Enter text content such as `AAA aaa BBB`. The extension will emit diagnostics for all words in all-uppercase.
+
+
+To test code completion it will complete these words:
+  - 'TypeScript' --> as just any text (not a type or keyword or anything, just text)
+  - 'JavaScript' --> same for typescript
+  - 'public' --> as keyword
+  - 'double' --> as type
+  - 'int' --> as type
+  - 'een' --> as type
+
+
+To test errors:
+  - Create a line without ';' at the end to get notified that each line must end with ';'
+
+
+To test warnings:
+  - Create a word that has more than 2 characters and all capitals to get notified that's not good
