@@ -14,7 +14,8 @@ import {
 	CompletionItemKind,
 	TextDocumentPositionParams,
 	TextDocumentSyncKind,
-	InitializeResult
+	InitializeResult,
+	Position
 } from 'vscode-languageserver/node';
 
 import {
@@ -134,48 +135,62 @@ documents.onDidChangeContent(change => {
 	validateTextDocument(change.document);
 });
 
+interface PatternCheckArray {
+	patternChecks: PatternCheckItem[]
+}
+interface PatternCheckItem {
+	regex: RegExp,
+	level: DiagnosticSeverity,
+	message: string
+}
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
 	// In this simple example we get the settings for every validate run.
 	const settings = await getDocumentSettings(textDocument.uri);
 
 	// The validator creates diagnostics for all uppercase words length 2 and more
 	const text = textDocument.getText();
-	const pattern = /\b[A-Z]{2,}\b/g;
-	let m: RegExpExecArray | null;
+	
+	// Remove newlines and leading spaces
+	const textWithoutNewlines = text.replace(/\r\n\s*/g, '\n');
+	const patternCheckData = [
+		{ regex: /\b[A-Z]{2,}\b/g, level: DiagnosticSeverity.Warning, message: '# is all uppercase!' }, // all capitals pattern
+		{ regex: /^(\r\n)*(.*[^;\s{}])$/gm, level: DiagnosticSeverity.Error, message: 'Line must end with ; for: #' }, // all lines must end with ;
+	];
+	
+	const patterns: PatternCheckArray = {
+		patternChecks: patternCheckData,
+	};
+	
+	const diagnostics = [];
 
-	let problems = 0;
-	const diagnostics: Diagnostic[] = [];
-	while ((m = pattern.exec(text)) && problems < settings.maxNumberOfProblems) {
-		problems++;
-		const diagnostic: Diagnostic = {
-			severity: DiagnosticSeverity.Warning,
-			range: {
-				start: textDocument.positionAt(m.index),
-				end: textDocument.positionAt(m.index + m[0].length)
-			},
-			message: `${m[0]} is all uppercase!`,
-			source: 'ex'
-		};
-		if (hasDiagnosticRelatedInformationCapability) {
-			diagnostic.relatedInformation = [
-				{
-					location: {
-						uri: textDocument.uri,
-						range: Object.assign({}, diagnostic.range)
-					},
-					message: 'Spelling matters'
-				},
-				{
-					location: {
-						uri: textDocument.uri,
-						range: Object.assign({}, diagnostic.range)
-					},
-					message: 'Particularly for names'
-				}
-			];
-		}
-		diagnostics.push(diagnostic);
-	}
+for (let arrayIndex = 0; patternCheckData.length > arrayIndex; arrayIndex++) {
+    let m;
+    let problems = 0;
+
+    // Reset the lastIndex property of the regular expression
+    patternCheckData[arrayIndex].regex.lastIndex = 0;
+
+    while ((m = patternCheckData[arrayIndex].regex.exec(text)) && problems < 1000) {
+        problems++;
+
+        const newLine = '\n';
+        const lastIndexOf = text.lastIndexOf(newLine, m.index);
+        const lineNumber = text.substr(0, m.index).split(newLine).length;
+        const characterPosition = Math.max(0, m.index - (lastIndexOf < 0 ? 0 : lastIndexOf + (newLine.length * 2)));
+
+        const diagnostic = {
+            severity: patternCheckData[arrayIndex].level,
+            range: {
+                start: { line: lineNumber - 1, character: characterPosition },
+                end: { line: lineNumber - 1, character: characterPosition + m[0].length },
+            },
+            message: patternCheckData[arrayIndex].message.replace('#', `"${m[0]}"`),
+            source: 'ex',
+        };
+
+        diagnostics.push(diagnostic);
+    }
+}
 
 	// Send the computed diagnostics to VSCode.
 	connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
