@@ -170,7 +170,7 @@ for (let arrayIndex = 0; patternCheckData.length > arrayIndex; arrayIndex++) {
     // Reset the lastIndex property of the regular expression
     patternCheckData[arrayIndex].regex.lastIndex = 0;
 
-    while ((m = patternCheckData[arrayIndex].regex.exec(text)) && problems < 1000) {
+    while ((m = patternCheckData[arrayIndex].regex.exec(text)) && problems < settings.maxNumberOfProblems) {
         problems++;
 
         const newLine = '\n';
@@ -211,43 +211,58 @@ connection.onCompletion(
 			{
 				label: 'TypeScript',
 				kind: CompletionItemKind.Text,
+				detail: 'Just text that is used a lot',
 				data: 1
 			},
 			{
 				label: 'JavaScript',
 				kind: CompletionItemKind.Text,
+				detail: 'Just text that is used a lot.',
 				data: 2
 			},
 			{
 				label: 'public',
-				kind: CompletionItemKind.Text,
+				kind: CompletionItemKind.Keyword,
+				detail: 'A literal that is commonly used.',
 				data: 3
 			},
 			{
 				label: 'double',
 				kind: CompletionItemKind.TypeParameter,
+				detail: 'Can be used to save numbers with decimals.',
 				data: 4
 			},
 			{
 				label: 'int',
 				kind: CompletionItemKind.TypeParameter,
+				detail: 'Can be used to save number without decimals.',
 				data: 5
 			},
 			{
 				label: 'een',
 				kind: CompletionItemKind.TypeParameter,
+				detail: 'Cannot be used for anything.',
 				data: 6
 			}
 		];
 	}
 );
+// Get the variable name by using Object.keys and finding the key with the matching value
+const getKindName = (kind: CompletionItemKind | undefined): string => {
+	const kindName = Object.keys(CompletionItemKind).find(
+		(key) => CompletionItemKind[key as keyof typeof CompletionItemKind] === kind
+	);
+	return kindName || 'Unknown';
+};
+  
 
 // This handler resolves additional information for the item selected in
 // the completion list.
 connection.onCompletionResolve(
+	
 	(item: CompletionItem): CompletionItem => {
-		item.detail = item.label + ' details';
-		item.documentation = item.label + ' documentation. Can be changed when filtering on data: ' + item.data;
+		item.detail = item.label + ' is a ' + getKindName(item.kind);
+		item.documentation = item.label + ' details:\n'+item.detail;
 		return item;
 	}
 );
