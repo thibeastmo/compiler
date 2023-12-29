@@ -19,5 +19,9 @@ public class Main {
         System.out.println(sumResult);
         int minusResult = instance.minus(4);
         System.out.println(minusResult);
+        boolean works = true;
+        System.out.println(works);
+        String text = "een tekst";
+        System.out.println(text);
     }
 }
