@@ -4,7 +4,7 @@ import org.antlr.v4.runtime.tree.*;
 public class Main {
     public static void main(String[] args) throws Exception {
         // Create an input stream from a file or string
-        CharStream input = CharStreams.fromFileName("input.java");
+        CharStream input = CharStreams.fromFileName("Input.java");
 
         // Create a lexer
         BasicJavaLexer lexer = new BasicJavaLexer(input);

@@ -52,7 +52,10 @@
 		"lint": "eslint ./client/src ./server/src --ext .ts,.tsx",
 		"postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
 		"test": "sh ./scripts/e2e.sh",
-		"antlr": "java -cp \".\\antlr-4.13.1-complete.jar\" org.antlr.v4.Tool ./antlr4/BasicJava.g4"
+		"antlr-compiler": "java -cp \".;antlr-4.13.1-complete.jar\" org.antlr.v4.Tool -o ./antlr4 ./antlr4/BasicJava.g4",
+		"antlr-main": "javac -cp \".;antlr-4.13.1-complete.jar\" ./antlr4/Main.java ./antlr4/*.java",
+		"antlr": "java -cp \".;.\\antlr-4.13.1-complete.jar\" antlr4.Main",
+		"antlr-java-compile": "javac -cp \".\\antlr-4.13.1-complete.jar\" antlr4/Input.java"
 	},
 	"devDependencies": {
 		"@types/mocha": "^10.0.6",

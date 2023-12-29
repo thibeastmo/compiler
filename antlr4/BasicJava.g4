@@ -25,6 +25,7 @@ type:   builtInType
 builtInType
     :   'int'
     |   'double'
+    |   'een'
     |   'void'
     ;
 
