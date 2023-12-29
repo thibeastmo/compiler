@@ -6,12 +6,18 @@ public class Main {
     }
 
     public int sum(int x) {
-        return x + attribute;
+        return attribute + x;
+    }
+
+    public int minus(int x) {
+        return attribute - x;
     }
 
     public static void main(String[] args) {
         Main instance = new Main(5);
-        int result = instance.sum(4);
-        System.out.println(result);
+        int sumResult = instance.sum(4);
+        System.out.println(sumResult);
+        int minusResult = instance.minus(4);
+        System.out.println(minusResult);
     }
 }
