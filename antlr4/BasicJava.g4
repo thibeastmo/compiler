@@ -2,12 +2,19 @@ grammar BasicJava;
 
 classDeclaration
     :   'public' 'class' ID '{'
-            memberDeclaration*
-        '}' ;
+            (memberDeclaration | constructorDeclaration)*
+        '}'
+    ;
 
 memberDeclaration
     :   attributeDeclaration
     |   methodDeclaration
+    ;
+
+constructorDeclaration
+    :   'public' ID '(' parameterList? ')' '{'
+            statement*
+        '}'
     ;
 
 attributeDeclaration
@@ -16,7 +23,8 @@ attributeDeclaration
 methodDeclaration
     :   'public' type ID '(' parameterList? ')' '{'
             statement*
-        '}' ;
+        '}'
+    ;
 
 type:   builtInType
     |   ID
