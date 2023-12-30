@@ -31,10 +31,7 @@ type:   builtInType
     ;
 
 builtInType
-    :   'int'
-    |   'double'
-    |   'String'
-    |   'void'
+    :   'void'
     ;
 
 parameterList

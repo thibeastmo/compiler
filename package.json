@@ -55,8 +55,9 @@
 		"alias-antlr4": "doskey antlr4='java -jar \"C:\\Users\\thimo\\Documents\\KDG\\Jaar4\\programmeren3\\vscode-extension-samples\\lsp-sample\\antlr-4.13.1-complete.jar\"'",
 		"antlr4-gen": "cd .\\antlr4 && antlr4 -visitor -Dlanguage=Java -package MyNameSpace -o ../MyNameSpace BasicJava.g4",
 		"alias-grun": "doskey grun='java org.antlr.v4.gui.TestRig'",
-		"compile-java": "cd .\\antlr4 && javac -cp \".;.\\antlr-4.13.1-complete.jar\" BasicJavaLexer.cs BasicJavaParser.cs MyParser.java",
-		"run-java": "cd .\\antlr4 && java -cp \".;.\\antlr-4.13.1-complete.jar\" MyParser"
+		"compile-java": "cd .\\MyNameSpace && javac -cp \".;.\\antlr-4.13.1-complete.jar\" MyParser.java",
+		"run-java": "cd .\\MyNameSpace && java -cp \".;.\\antlr-4.13.1-complete.jar\" MyParser",
+		"run": "npm run antlr4-gen && npm run compile-java && npm run run-java"
 	},
 	"devDependencies": {
 		"@types/mocha": "^10.0.6",
