@@ -54,7 +54,9 @@
 		"test": "sh ./scripts/e2e.sh",
 		"antlr-compiler": "java -cp \".;antlr-4.13.1-complete.jar\" org.antlr.v4.Tool -o ./antlr4 ./antlr4/BasicJava.g4",
 		"antlr": "cd antlr4 && java -cp \".;.\\antlr-4.13.1-complete.jar\" Main",
-		"antlr-java-compile": "javac -cp \".\\antlr-4.13.1-complete.jar\" antlr4/Main.java"
+		"antlr-java-compile": "javac -cp \".\\antlr-4.13.1-complete.jar\" antlr4/Main.java",
+		"javac": "javac -cp \".;.\\antlr-4.13.1-complete.jar\" antlr4/Input.java antlr4/*.java",
+		"java": "java -cp \".;.\\antlr-4.13.1-complete.jar\" antlr4.Input"
 	},
 	"devDependencies": {
 		"@types/mocha": "^10.0.6",

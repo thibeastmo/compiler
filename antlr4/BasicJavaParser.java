@@ -17,7 +17,7 @@ public class BasicJavaParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, T__10=11, T__11=12, T__12=13, ID=14, WS=15;
+		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, ID=15, WS=16;
 	public static final int
 		RULE_classDeclaration = 0, RULE_memberDeclaration = 1, RULE_attributeDeclaration = 2, 
 		RULE_methodDeclaration = 3, RULE_type = 4, RULE_builtInType = 5, RULE_parameterList = 6, 
@@ -33,14 +33,14 @@ public class BasicJavaParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'public'", "'class'", "'{'", "'}'", "'private'", "'final'", "';'", 
-			"'('", "')'", "'int'", "'double'", "'void'", "','"
+			"'('", "')'", "'int'", "'double'", "'String'", "'void'", "','"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, "ID", "WS"
+			null, null, null, "ID", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -315,7 +315,7 @@ public class BasicJavaParser extends Parser {
 			setState(43);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 23552L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 48128L) != 0)) {
 				{
 				setState(42);
 				parameterList();
@@ -385,6 +385,7 @@ public class BasicJavaParser extends Parser {
 			case T__9:
 			case T__10:
 			case T__11:
+			case T__12:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(55);
@@ -438,7 +439,7 @@ public class BasicJavaParser extends Parser {
 			{
 			setState(59);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 7168L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 15360L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -499,11 +500,11 @@ public class BasicJavaParser extends Parser {
 			setState(69);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==T__12) {
+			while (_la==T__13) {
 				{
 				{
 				setState(63);
-				match(T__12);
+				match(T__13);
 				setState(64);
 				type();
 				setState(65);
@@ -568,7 +569,7 @@ public class BasicJavaParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u000fL\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001\u0010L\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0001"+
 		"\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0005\u0000\u0016"+
@@ -581,12 +582,12 @@ public class BasicJavaParser extends Parser {
 		"\u0001\u0005\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006"+
 		"\u0001\u0006\u0005\u0006D\b\u0006\n\u0006\f\u0006G\t\u0006\u0001\u0007"+
 		"\u0001\u0007\u0001\u0007\u0001\u0007\u0000\u0000\b\u0000\u0002\u0004\u0006"+
-		"\b\n\f\u000e\u0000\u0001\u0001\u0000\n\fI\u0000\u0010\u0001\u0000\u0000"+
+		"\b\n\f\u000e\u0000\u0001\u0001\u0000\n\rI\u0000\u0010\u0001\u0000\u0000"+
 		"\u0000\u0002\u001e\u0001\u0000\u0000\u0000\u0004 \u0001\u0000\u0000\u0000"+
 		"\u0006&\u0001\u0000\u0000\u0000\b9\u0001\u0000\u0000\u0000\n;\u0001\u0000"+
 		"\u0000\u0000\f=\u0001\u0000\u0000\u0000\u000eH\u0001\u0000\u0000\u0000"+
 		"\u0010\u0011\u0005\u0001\u0000\u0000\u0011\u0012\u0005\u0002\u0000\u0000"+
-		"\u0012\u0013\u0005\u000e\u0000\u0000\u0013\u0017\u0005\u0003\u0000\u0000"+
+		"\u0012\u0013\u0005\u000f\u0000\u0000\u0013\u0017\u0005\u0003\u0000\u0000"+
 		"\u0014\u0016\u0003\u0002\u0001\u0000\u0015\u0014\u0001\u0000\u0000\u0000"+
 		"\u0016\u0019\u0001\u0000\u0000\u0000\u0017\u0015\u0001\u0000\u0000\u0000"+
 		"\u0017\u0018\u0001\u0000\u0000\u0000\u0018\u001a\u0001\u0000\u0000\u0000"+
@@ -595,21 +596,21 @@ public class BasicJavaParser extends Parser {
 		"\u001d\u001f\u0003\u0006\u0003\u0000\u001e\u001c\u0001\u0000\u0000\u0000"+
 		"\u001e\u001d\u0001\u0000\u0000\u0000\u001f\u0003\u0001\u0000\u0000\u0000"+
 		" !\u0005\u0005\u0000\u0000!\"\u0005\u0006\u0000\u0000\"#\u0003\b\u0004"+
-		"\u0000#$\u0005\u000e\u0000\u0000$%\u0005\u0007\u0000\u0000%\u0005\u0001"+
+		"\u0000#$\u0005\u000f\u0000\u0000$%\u0005\u0007\u0000\u0000%\u0005\u0001"+
 		"\u0000\u0000\u0000&\'\u0005\u0001\u0000\u0000\'(\u0003\b\u0004\u0000("+
-		")\u0005\u000e\u0000\u0000)+\u0005\b\u0000\u0000*,\u0003\f\u0006\u0000"+
+		")\u0005\u000f\u0000\u0000)+\u0005\b\u0000\u0000*,\u0003\f\u0006\u0000"+
 		"+*\u0001\u0000\u0000\u0000+,\u0001\u0000\u0000\u0000,-\u0001\u0000\u0000"+
 		"\u0000-.\u0005\t\u0000\u0000.2\u0005\u0003\u0000\u0000/1\u0003\u000e\u0007"+
 		"\u00000/\u0001\u0000\u0000\u000014\u0001\u0000\u0000\u000020\u0001\u0000"+
 		"\u0000\u000023\u0001\u0000\u0000\u000035\u0001\u0000\u0000\u000042\u0001"+
 		"\u0000\u0000\u000056\u0005\u0004\u0000\u00006\u0007\u0001\u0000\u0000"+
-		"\u00007:\u0003\n\u0005\u00008:\u0005\u000e\u0000\u000097\u0001\u0000\u0000"+
+		"\u00007:\u0003\n\u0005\u00008:\u0005\u000f\u0000\u000097\u0001\u0000\u0000"+
 		"\u000098\u0001\u0000\u0000\u0000:\t\u0001\u0000\u0000\u0000;<\u0007\u0000"+
 		"\u0000\u0000<\u000b\u0001\u0000\u0000\u0000=>\u0003\b\u0004\u0000>E\u0005"+
-		"\u000e\u0000\u0000?@\u0005\r\u0000\u0000@A\u0003\b\u0004\u0000AB\u0005"+
-		"\u000e\u0000\u0000BD\u0001\u0000\u0000\u0000C?\u0001\u0000\u0000\u0000"+
+		"\u000f\u0000\u0000?@\u0005\u000e\u0000\u0000@A\u0003\b\u0004\u0000AB\u0005"+
+		"\u000f\u0000\u0000BD\u0001\u0000\u0000\u0000C?\u0001\u0000\u0000\u0000"+
 		"DG\u0001\u0000\u0000\u0000EC\u0001\u0000\u0000\u0000EF\u0001\u0000\u0000"+
-		"\u0000F\r\u0001\u0000\u0000\u0000GE\u0001\u0000\u0000\u0000HI\u0005\u000e"+
+		"\u0000F\r\u0001\u0000\u0000\u0000GE\u0001\u0000\u0000\u0000HI\u0005\u000f"+
 		"\u0000\u0000IJ\u0005\u0007\u0000\u0000J\u000f\u0001\u0000\u0000\u0000"+
 		"\u0006\u0017\u001e+29E";
 	public static final ATN _ATN =

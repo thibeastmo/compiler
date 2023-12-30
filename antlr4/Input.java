@@ -1,7 +1,7 @@
-public class Main {
+public class input {
     private int attribute;
 
-    public Main(int initialValue) {
+    public Input(int initialValue) {
         this.attribute = initialValue;
     }
 
@@ -20,7 +20,7 @@ public class Main {
         int minusResult = instance.minus(4);
         System.out.println(minusResult);
         boolean works = true;
-        System.out.println(works);
+        System.out.println(!works);
         String text = "een tekst";
         System.out.println(text);
     }

@@ -25,7 +25,6 @@ type:   builtInType
 builtInType
     :   'int'
     |   'double'
-    |   'boolean'
     |   'String'
     |   'void'
     ;
