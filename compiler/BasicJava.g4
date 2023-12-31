@@ -26,19 +26,33 @@ methodDeclaration
         '}'
     ;
 
-type:   builtInType
-    |   ID
-    ;
-
-builtInType
-    :   'void'
+type
+    :   'int'
+    |   'boolean'
+    |   'String'
+    |   'void'
     ;
 
 parameterList
     :   type ID ( ',' type ID )* ;
 
 statement
-    :   ID ';' ;
+    :   ID ';' 
+    |   'return' expression ';'    // Added for return statements
+    |   'System.out.println' '(' expression ')' ';' // Added for println statements
+    ;
 
-ID  :   [a-zA-Z]+ ;
-WS  :   [ \t\r\n]+ -> skip ;
+expression
+    :   '(' expression ')'
+    |   expression '+' expression
+    |   ID
+    |   INT
+    |   BOOL   // Added for boolean literals
+    |   STRING // Added for string literals
+    ;
+
+ID      : [a-zA-Z]+ ;
+INT     : [0-9]+ ;
+BOOL    : 'true' | 'false' ;
+STRING  : '"' .*? '"' ;
+WS      : [ \t\r\n]+ -> skip ;

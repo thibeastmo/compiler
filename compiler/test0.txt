@@ -1,0 +1,21 @@
+public class MyParser {
+    private final int attribute;
+
+    public MyParser(int initialValue) {
+        this.attribute = initialValue;
+    }
+
+    public int sum(int x) {
+        return x + attribute;
+    }
+
+    public static void main(String[] args) {
+        MyParser instance = new MyParser(5);
+        int result = instance.sum(4);
+        System.out.println(result);
+        boolean works = true;
+        System.out.println(works);
+        String text = "een tekst";
+        System.out.println(text);
+    }
+}
