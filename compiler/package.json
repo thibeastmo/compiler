@@ -12,7 +12,10 @@
 		"antlr-compile": "antlr-4.9.3-complete.jar",
 		"gen-compile-debug": "npm run antlr-gen && npm run java-gen && npm run grun-gui",
 		"gen-compile": "npm run antlr-gen && npm run java-gen",
-		"test": "java -cp \".;antlr-4.9.3-complete.jar\" test0.txt"
+		"test": "java -cp \".;antlr-4.9.3-complete.jar\" test0.txt",
+		"gen-jgen-test": "npm run antlr-gen && npm run java-gen && npm run test",
+		"output": "java -cp \".;antlr-4.9.3-complete.jar\" BasicJavaDriver",
+		"gen-compile-output": "npm run gen-compile && npm run output"
 	},
 	"author": "Thimo Mortelmans",
 	"license": "MIT",
