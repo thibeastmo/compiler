@@ -1,5 +1,0 @@
-extension/out
-node_modules
-extension/client/server
-extension/.vscode-test
-.gitignore
