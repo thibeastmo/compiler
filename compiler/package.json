@@ -5,8 +5,9 @@
 	"main": "index.js",
 	"scripts": {
 		"antlr": "java -cp antlr-4.9.3-complete.jar org.antlr.v4.Tool",
-		"antlr-gen": "java -cp antlr-4.9.3-complete.jar\" org.antlr.v4.Tool BasicJava.g4",
-		"grun-gui": "java -cp \".;antlr-4.9.3-complete.jar\" org.antlr.v4.gui.TestRig BasicJava classDeclaration -gui test0.txt",
+		"antlr-gen": "java -cp antlr-4.9.3-complete.jar org.antlr.v4.Tool BasicJava.g4",
+		"java-gen": "javac -cp \".;antlr-4.9.3-complete.jar\" BasicJava*.java",
+		"grun-gui": "java -cp \".;antlr-4.9.3-complete.jar\" org.antlr.v4.gui.TestRig BasicJava memberDeclaration -gui test0.txt",
 		"grun": "java -cp \".;antlr-4.9.3-complete.jar\" org.antlr.v4.gui.TestRig",
 		"antlr-compile": "antlr-4.9.3-complete.jar"
 	},
@@ -15,4 +16,4 @@
 	"devDependencies": {
 	  "antlr4": "^4.9.3"
 	}
-}  
+}

@@ -1,27 +1,15 @@
 grammar BasicJava;
 
-classDeclaration
-    :   'public' 'class' ID '{'
-            (memberDeclaration | constructorDeclaration)*
-        '}'
-    ;
-
 memberDeclaration
     :   attributeDeclaration
     |   methodDeclaration
     ;
 
-constructorDeclaration
-    :   'public' ID '(' parameterList? ')' '{'
-            statement*
-        '}'
-    ;
-
 attributeDeclaration
-    :   'private' 'final' type ID ';' ;
+    :   type ID '=' expression ';' ;
 
 methodDeclaration
-    :   'public' type ID '(' parameterList? ')' '{'
+    :   'function' type ID '(' parameterList? ')' '{'
             statement*
         '}'
     ;
@@ -29,7 +17,7 @@ methodDeclaration
 type
     :   'int'
     |   'boolean'
-    |   'String'
+    |   'string'
     |   'void'
     ;
 
@@ -38,8 +26,7 @@ parameterList
 
 statement
     :   ID ';' 
-    |   'return' expression ';'    // Added for return statements
-    |   'System.out.println' '(' expression ')' ';' // Added for println statements
+    |   'return' expression ';'
     ;
 
 expression
@@ -47,8 +34,8 @@ expression
     |   expression '+' expression
     |   ID
     |   INT
-    |   BOOL   // Added for boolean literals
-    |   STRING // Added for string literals
+    |   BOOL
+    |   STRING
     ;
 
 ID      : [a-zA-Z]+ ;

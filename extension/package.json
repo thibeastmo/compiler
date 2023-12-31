@@ -51,13 +51,7 @@
 		"watch": "tsc -b -w",
 		"lint": "eslint ./client/src ./server/src --ext .ts,.tsx",
 		"postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
-		"test": "sh ./scripts/e2e.sh",
-		"antlr": "cd .\\lib && java -cp \"C:\\Users\\thimo\\Documents\\KDG\\Jaar4\\programmeren3\\vscode-extension-samples\\lsp-sample\\lib\\antlr-4.9.3-complete.jar\" org.antlr.v4.Tool",
-		"antlr-gen": "cd .\\lib && java -cp \"C:\\Users\\thimo\\Documents\\KDG\\Jaar4\\programmeren3\\vscode-extension-samples\\lsp-sample\\lib\\antlr-4.9.3-complete.jar\" org.antlr.v4.Tool BasicJava.g4",
-		"class": "SET CLASSPATH=.;C:\\Users\\thimo\\Documents\\KDG\\Jaar4\\programmeren3\\vscode-extension-samples\\lsp-sample\\lib\\antlr-4.9.3-complete.jar;%CLASSPATH%",
-		"grun-gui": "cd .\\lib && java -cp \".;C:\\Users\\thimo\\Documents\\KDG\\Jaar4\\programmeren3\\vscode-extension-samples\\lsp-sample\\lib\\antlr-4.9.3-complete.jar\" org.antlr.v4.gui.TestRig BasicJava classDeclaration -gui test0.txt",
-		"grun": "cd .\\lib && java -cp \".;C:\\Users\\thimo\\Documents\\KDG\\Jaar4\\programmeren3\\vscode-extension-samples\\lsp-sample\\lib\\antlr-4.9.3-complete.jar\" org.antlr.v4.gui.TestRig",
-		"antlr-compile": "cd .\\lib && \"C:\\Users\\thimo\\Documents\\KDG\\Jaar4\\programmeren3\\vscode-extension-samples\\lsp-sample\\lib\\antlr-4.9.3-complete.jar\""
+		"test": "sh ./scripts/e2e.sh"
 	},
 	"devDependencies": {
 		"@types/mocha": "^10.0.6",

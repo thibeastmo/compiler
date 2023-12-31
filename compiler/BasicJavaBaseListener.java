@@ -15,18 +15,6 @@ public class BasicJavaBaseListener implements BasicJavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterClassDeclaration(BasicJavaParser.ClassDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitClassDeclaration(BasicJavaParser.ClassDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterMemberDeclaration(BasicJavaParser.MemberDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -34,18 +22,6 @@ public class BasicJavaBaseListener implements BasicJavaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMemberDeclaration(BasicJavaParser.MemberDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterConstructorDeclaration(BasicJavaParser.ConstructorDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitConstructorDeclaration(BasicJavaParser.ConstructorDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -87,18 +63,6 @@ public class BasicJavaBaseListener implements BasicJavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBuiltInType(BasicJavaParser.BuiltInTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBuiltInType(BasicJavaParser.BuiltInTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterParameterList(BasicJavaParser.ParameterListContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -118,6 +82,18 @@ public class BasicJavaBaseListener implements BasicJavaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStatement(BasicJavaParser.StatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExpression(BasicJavaParser.ExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExpression(BasicJavaParser.ExpressionContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
