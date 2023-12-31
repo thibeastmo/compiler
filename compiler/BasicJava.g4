@@ -1,17 +1,20 @@
 grammar BasicJava;
 
-memberDeclaration
+program
+    :   declaration*
+    ;
+
+declaration
     :   attributeDeclaration
     |   methodDeclaration
     ;
 
 attributeDeclaration
-    :   type ID '=' expression ';' ;
+    :   type ID '=' expression ';'
+    ;
 
 methodDeclaration
-    :   'function' type ID '(' parameterList? ')' '{'
-            statement*
-        '}'
+    :   'function' type ID '(' methodDeclarationParameterList? ')' '{' statement* '}'
     ;
 
 type
@@ -21,24 +24,41 @@ type
     |   'void'
     ;
 
-parameterList
-    :   type ID ( ',' type ID )* ;
+methodDeclarationParameterList
+    :   type ID ( ',' type ID )*
+    ;
+
+methodCall
+    :   ID '(' argumentList? ')'
+    ;
+
+argumentList
+    :   expression ( ',' expression )*
+    ;
 
 statement
-    :   ID ';' 
+    :   ID ';'
     |   'return' expression ';'
+    |   methodCall ';'
+    |   if_statement
+    ;
+
+if_statement
+    :   'if' '(' expression ')' '{' statement* '}'
     ;
 
 expression
     :   '(' expression ')'
     |   expression '+' expression
+    |   expression '-' expression
     |   ID
     |   INT
     |   BOOL
     |   STRING
+    |   methodCall
     ;
 
-ID      : [a-zA-Z]+ ;
+ID      : [a-zA-Z_.]+ ;
 INT     : [0-9]+ ;
 BOOL    : 'true' | 'false' ;
 STRING  : '"' .*? '"' ;

@@ -1,7 +1,21 @@
-function int sum(int x, int y) {
+function int add(int x, int y) {
     return x + y;
 }
+function int subtract(int x, int y) {
+    return x - y;
+}
 int integer = 5;
-int result = sum(4);
+int integerTwo = 4;
+int sum = add(integer, integerTwo);
+int subtraction = subtract(integer, integerTwo);
+
+System.out.println("Sum: " + sum);
+System.out.println("Subtraction: " + subtraction);
+
 boolean works = true;
+if (works) {
+    System.out.println("It works!");
+}
+
 string text = "een tekst";
+System.out.println("Text: " + text);

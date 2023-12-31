@@ -15,13 +15,25 @@ public class BasicJavaBaseListener implements BasicJavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMemberDeclaration(BasicJavaParser.MemberDeclarationContext ctx) { }
+	@Override public void enterProgram(BasicJavaParser.ProgramContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMemberDeclaration(BasicJavaParser.MemberDeclarationContext ctx) { }
+	@Override public void exitProgram(BasicJavaParser.ProgramContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDeclaration(BasicJavaParser.DeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDeclaration(BasicJavaParser.DeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -63,13 +75,37 @@ public class BasicJavaBaseListener implements BasicJavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParameterList(BasicJavaParser.ParameterListContext ctx) { }
+	@Override public void enterMethodDeclarationParameterList(BasicJavaParser.MethodDeclarationParameterListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParameterList(BasicJavaParser.ParameterListContext ctx) { }
+	@Override public void exitMethodDeclarationParameterList(BasicJavaParser.MethodDeclarationParameterListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMethodCall(BasicJavaParser.MethodCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMethodCall(BasicJavaParser.MethodCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArgumentList(BasicJavaParser.ArgumentListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArgumentList(BasicJavaParser.ArgumentListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -82,6 +118,18 @@ public class BasicJavaBaseListener implements BasicJavaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStatement(BasicJavaParser.StatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIf_statement(BasicJavaParser.If_statementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIf_statement(BasicJavaParser.If_statementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

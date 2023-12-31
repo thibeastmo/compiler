@@ -7,15 +7,25 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface BasicJavaListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link BasicJavaParser#memberDeclaration}.
+	 * Enter a parse tree produced by {@link BasicJavaParser#program}.
 	 * @param ctx the parse tree
 	 */
-	void enterMemberDeclaration(BasicJavaParser.MemberDeclarationContext ctx);
+	void enterProgram(BasicJavaParser.ProgramContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BasicJavaParser#memberDeclaration}.
+	 * Exit a parse tree produced by {@link BasicJavaParser#program}.
 	 * @param ctx the parse tree
 	 */
-	void exitMemberDeclaration(BasicJavaParser.MemberDeclarationContext ctx);
+	void exitProgram(BasicJavaParser.ProgramContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BasicJavaParser#declaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterDeclaration(BasicJavaParser.DeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BasicJavaParser#declaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitDeclaration(BasicJavaParser.DeclarationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link BasicJavaParser#attributeDeclaration}.
 	 * @param ctx the parse tree
@@ -47,15 +57,35 @@ public interface BasicJavaListener extends ParseTreeListener {
 	 */
 	void exitType(BasicJavaParser.TypeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BasicJavaParser#parameterList}.
+	 * Enter a parse tree produced by {@link BasicJavaParser#methodDeclarationParameterList}.
 	 * @param ctx the parse tree
 	 */
-	void enterParameterList(BasicJavaParser.ParameterListContext ctx);
+	void enterMethodDeclarationParameterList(BasicJavaParser.MethodDeclarationParameterListContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BasicJavaParser#parameterList}.
+	 * Exit a parse tree produced by {@link BasicJavaParser#methodDeclarationParameterList}.
 	 * @param ctx the parse tree
 	 */
-	void exitParameterList(BasicJavaParser.ParameterListContext ctx);
+	void exitMethodDeclarationParameterList(BasicJavaParser.MethodDeclarationParameterListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BasicJavaParser#methodCall}.
+	 * @param ctx the parse tree
+	 */
+	void enterMethodCall(BasicJavaParser.MethodCallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BasicJavaParser#methodCall}.
+	 * @param ctx the parse tree
+	 */
+	void exitMethodCall(BasicJavaParser.MethodCallContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BasicJavaParser#argumentList}.
+	 * @param ctx the parse tree
+	 */
+	void enterArgumentList(BasicJavaParser.ArgumentListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BasicJavaParser#argumentList}.
+	 * @param ctx the parse tree
+	 */
+	void exitArgumentList(BasicJavaParser.ArgumentListContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link BasicJavaParser#statement}.
 	 * @param ctx the parse tree
@@ -66,6 +96,16 @@ public interface BasicJavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStatement(BasicJavaParser.StatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BasicJavaParser#if_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterIf_statement(BasicJavaParser.If_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BasicJavaParser#if_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitIf_statement(BasicJavaParser.If_statementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link BasicJavaParser#expression}.
 	 * @param ctx the parse tree
