@@ -1,7 +1,7 @@
-package antlr;
+package app;
 
-import app.ExpressionProcessor;
-import app.Program;
+import antlr.BasicJavaLexer;
+import antlr.BasicJavaParser;
 import expression.AntlrToProgram;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
