@@ -76,7 +76,15 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     }
 	@Override 
     public T visitVariable(BasicJavaParser.VariableContext ctx) {
-        return visitChildren(ctx);
+        Token idToken = ctx.ID().getSymbol();
+        String type = ctx.getChild(0).getText();
+        String valueText = ctx.getChild(3).getText();
+
+        String id = ctx.getChild(1).getText();
+        if (!vars.contains(id)) {
+            semanticErrors.add("Error: variable " + id + " not declared (line: "+line+", column: "+column+")")
+        }
+        return new Variable(id);
     }
 	@Override 
     public T visitSubtraction(BasicJavaParser.SubtractionContext ctx) {
@@ -91,7 +99,7 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
 	@Override 
     public T visitBool(BasicJavaParser.BoolContext ctx) { 
         String boolText = ctx.getChild(1).getText();
-        return boolText.equals("true") ? true : false;
+        return boolText.equals("true");
     }
 	@Override
     public T visitText(BasicJavaParser.TextContext ctx) { 
