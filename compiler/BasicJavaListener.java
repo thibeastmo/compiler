@@ -7,35 +7,39 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface BasicJavaListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link BasicJavaParser#program}.
+	 * Enter a parse tree produced by the {@code Program}
+	 * labeled alternative in {@link BasicJavaParser#prog}.
 	 * @param ctx the parse tree
 	 */
 	void enterProgram(BasicJavaParser.ProgramContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BasicJavaParser#program}.
+	 * Exit a parse tree produced by the {@code Program}
+	 * labeled alternative in {@link BasicJavaParser#prog}.
 	 * @param ctx the parse tree
 	 */
 	void exitProgram(BasicJavaParser.ProgramContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BasicJavaParser#declaration}.
+	 * Enter a parse tree produced by {@link BasicJavaParser#declarating}.
+	 * @param ctx the parse tree
+	 */
+	void enterDeclarating(BasicJavaParser.DeclaratingContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BasicJavaParser#declarating}.
+	 * @param ctx the parse tree
+	 */
+	void exitDeclarating(BasicJavaParser.DeclaratingContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Declaration}
+	 * labeled alternative in {@link BasicJavaParser#variableDeclaration}.
 	 * @param ctx the parse tree
 	 */
 	void enterDeclaration(BasicJavaParser.DeclarationContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BasicJavaParser#declaration}.
+	 * Exit a parse tree produced by the {@code Declaration}
+	 * labeled alternative in {@link BasicJavaParser#variableDeclaration}.
 	 * @param ctx the parse tree
 	 */
 	void exitDeclaration(BasicJavaParser.DeclarationContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link BasicJavaParser#attributeDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void enterAttributeDeclaration(BasicJavaParser.AttributeDeclarationContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link BasicJavaParser#attributeDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void exitAttributeDeclaration(BasicJavaParser.AttributeDeclarationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link BasicJavaParser#methodDeclaration}.
 	 * @param ctx the parse tree
@@ -107,13 +111,85 @@ public interface BasicJavaListener extends ParseTreeListener {
 	 */
 	void exitIf_statement(BasicJavaParser.If_statementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BasicJavaParser#expression}.
+	 * Enter a parse tree produced by {@link BasicJavaParser#while_statement}.
 	 * @param ctx the parse tree
 	 */
-	void enterExpression(BasicJavaParser.ExpressionContext ctx);
+	void enterWhile_statement(BasicJavaParser.While_statementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BasicJavaParser#expression}.
+	 * Exit a parse tree produced by {@link BasicJavaParser#while_statement}.
 	 * @param ctx the parse tree
 	 */
-	void exitExpression(BasicJavaParser.ExpressionContext ctx);
+	void exitWhile_statement(BasicJavaParser.While_statementContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Addition}
+	 * labeled alternative in {@link BasicJavaParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterAddition(BasicJavaParser.AdditionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Addition}
+	 * labeled alternative in {@link BasicJavaParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitAddition(BasicJavaParser.AdditionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Variable}
+	 * labeled alternative in {@link BasicJavaParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariable(BasicJavaParser.VariableContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Variable}
+	 * labeled alternative in {@link BasicJavaParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariable(BasicJavaParser.VariableContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Subtraction}
+	 * labeled alternative in {@link BasicJavaParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterSubtraction(BasicJavaParser.SubtractionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Subtraction}
+	 * labeled alternative in {@link BasicJavaParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitSubtraction(BasicJavaParser.SubtractionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Number}
+	 * labeled alternative in {@link BasicJavaParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumber(BasicJavaParser.NumberContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Number}
+	 * labeled alternative in {@link BasicJavaParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumber(BasicJavaParser.NumberContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Bool}
+	 * labeled alternative in {@link BasicJavaParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterBool(BasicJavaParser.BoolContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Bool}
+	 * labeled alternative in {@link BasicJavaParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitBool(BasicJavaParser.BoolContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Text}
+	 * labeled alternative in {@link BasicJavaParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterText(BasicJavaParser.TextContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Text}
+	 * labeled alternative in {@link BasicJavaParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitText(BasicJavaParser.TextContext ctx);
 }

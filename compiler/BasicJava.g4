@@ -1,16 +1,16 @@
 grammar BasicJava;
 
-program
-    :   declaration*
+prog
+    :   (declarating | expression)+ EOF    # Program
     ;
 
-declaration
-    :   attributeDeclaration
+declarating
+    :   variableDeclaration
     |   methodDeclaration
     ;
 
-attributeDeclaration
-    :   type ID '=' expression ';'
+variableDeclaration
+    :   type ID '=' expression ';'  # Declaration
     ;
 
 methodDeclaration
@@ -20,7 +20,7 @@ methodDeclaration
 type
     :   'int'
     |   'boolean'
-    |   'string'
+    |   'text'
     |   'void'
     ;
 
@@ -43,23 +43,28 @@ statement
     |   if_statement
     ;
 
+
 if_statement
     :   'if' '(' expression ')' '{' statement* '}'
     ;
 
-expression
-    :   '(' expression ')'
-    |   expression '+' expression
-    |   expression '-' expression
-    |   ID
-    |   INT
-    |   BOOL
-    |   STRING
-    |   methodCall
+while_statement
+    :   'while' '(' expression ')' '{' statement* '}'
     ;
+
+
+expression
+    :   expression '-' expression   # Subtraction
+    |   expression '+' expression   # Addition
+    |   INT                         # Number
+    |   BOOL                        # Bool
+    |   TEXT                        # Text
+    |   ID                          # Variable
+    ;
+
 
 ID      : [a-zA-Z_.]+ ;
 INT     : [0-9]+ ;
 BOOL    : 'true' | 'false' ;
-STRING  : '"' .*? '"' ;
+TEXT  : '"' .*? '"' ;
 WS      : [ \t\r\n]+ -> skip ;
