@@ -12,6 +12,10 @@ import java.io.IOException;
 
 public class BasicJavaApp {
     public static void main(String[] args) {
+        if (args == null || args.length < 1) {
+            args = new String[1];
+        }
+        args[0] = "test0.txt"; //to test faster
         if (args.length != 1) {
             System.err.print("Usage: file name");
         }

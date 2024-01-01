@@ -10,7 +10,7 @@ import expression.*;
 
 public class ExpressionProcessor {
     List<Expression> list;
-    public Map<String, Integer> values; //symbol table for storing values of variables
+    public Map<String, Object> values; //symbol table for storing values of variables
 
     public ExpressionProcessor(List<Expression> list) {
         this.list = list;
