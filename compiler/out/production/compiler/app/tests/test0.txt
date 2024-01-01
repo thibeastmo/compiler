@@ -1,2 +1,6 @@
-text t = "een tekst";
-boolean b = true;
+int i = 5;
+int j = 7;
+int added = i + j;
+int subtracted = i - j;
+int addedSubtracted = i + j - 3;
+int subtractedAdded = i - j + 3;

@@ -31,10 +31,11 @@ public class ExpressionProcessor {
                 values.put(decl.id, decl.value);
                 System.out.println(decl.id + " declard with value " + decl.value);
             }
-            else { //e instance of Number, text, Bool, Addition, Subtraction
+            else if (e != null) { //e instance of Number, text, Bool, Addition, Subtraction
                 String input = e.toString();
                 Object result = getEvalResult(e);
-                evaluations.add(input + " is " + result);
+                String evaluation = input + " is " + result;
+                evaluations.add(evaluation);
             }
         }
 

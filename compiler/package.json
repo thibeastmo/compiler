@@ -15,7 +15,7 @@
 		"test": "java -cp \".;lib/antlr-4.9.3-complete.jar\" src/app/tests/test0.txt",
 		"gen-jgen-test": "npm run antlr-gen && npm run java-gen && npm run test",
 		"gen-compile-output": "npm run gen-compile && npm run output",
-		"javac-main": "javac -cp \".;lib/antlr-4.9.3-complete.jar\" src.antlr.Main.java"
+		"javac-main": "javac -cp \".;../../lib/antlr-4.9.3-complete.jar\" src.antlr.Main.java"
 	},
 	"author": "Thimo Mortelmans",
 	"license": "MIT",

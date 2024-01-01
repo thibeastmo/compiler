@@ -1,5 +1,5 @@
-int integer = 5;
-int integerTwo = 7;
+int i = 5;
+int j = 7;
 int added = i + j;
 int subtracted = i - j;
 int addedSubtracted = i + j - 3;

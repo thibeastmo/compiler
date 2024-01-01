@@ -7,6 +7,7 @@ import antlr.BasicJavaBaseVisitor;
 import antlr.BasicJavaParser;
 import app.ExpressionProcessor;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     private List<String> vars; //stores all the variables declared in the program so far
@@ -42,7 +43,19 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
             return new VariableDeclaration(id, type, valueText);
         }
         else if (type.equals("int")) {
-            int value = Integer.parseInt(valueText);
+            final int calculationPart = 3;
+            int value = 0;
+            //expression can either be addition or subtraction or integer
+            ParseTree child = ctx.children.get(calculationPart);
+            if (child instanceof BasicJavaParser.NumberContext) {
+                value = Integer.parseInt(valueText);
+            }
+            else {
+                if (child instanceof BasicJavaParser.AdditionContext) {
+                    return visitAddition((BasicJavaParser.AdditionContext)child);
+                }
+                return visitSubtraction((BasicJavaParser.SubtractionContext)child);
+            }
             return new VariableDeclaration(id, type, value);
         }
         else {
@@ -94,7 +107,7 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
         int line = idToken.getLine();
         int column = idToken.getCharPositionInLine() + 1; //0 indexed +1
 
-        String id = ctx.getChild(1).getText();
+        String id = ctx.getChild(0).getText();
         if (!vars.contains(id)) {
             semanticErrors.add("Error: variable " + id + " not declared (line: "+line+", column: "+column+")");
         }
@@ -108,17 +121,17 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     }
 	@Override 
     public Expression visitNumber(BasicJavaParser.NumberContext ctx) {
-        String numText = ctx.getChild(1).getText();
+        String numText = ctx.getChild(0).getText();
         int num = Integer.parseInt(numText);
         return new Number(num);
     }
 	@Override 
     public Expression visitBool(BasicJavaParser.BoolContext ctx) { 
-        String boolText = ctx.getChild(1).getText();
+        String boolText = ctx.getChild(0).getText();
         return new Bool(boolText.equals("true"));
     }
 	@Override
     public Expression visitText(BasicJavaParser.TextContext ctx) { 
-        return new Text(ctx.getChild(1).getText());
+        return new Text(ctx.getChild(0).getText());
     }
 }
