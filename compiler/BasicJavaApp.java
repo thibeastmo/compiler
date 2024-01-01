@@ -19,6 +19,18 @@ public class BasicJavaApp {
             //Create a visitor for converting the parse tree into Program/Expression objects
             AntlrToProgram progVisitor = new AntlrToProgram();
             Program prog = progVisitor.visit(antlrAST);
+
+            if (progVisitor.semanticErrors.isEmpty()) {
+                ExpressionProcessor ep = new ExpressionProcessor(prog.expressions);
+                for (String evaluation : ep.getEvaluationResults()) {
+                    System.out.println(evaluation);
+                }
+            }
+            else {
+                for (String err : progVisitor.semanticErrors) {
+                    System.out.println(err);
+                }
+            }
         }
     }
 
