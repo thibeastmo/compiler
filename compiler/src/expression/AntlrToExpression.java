@@ -5,6 +5,7 @@ import java.util.List;
 
 import antlr.BasicJavaBaseVisitor;
 import antlr.BasicJavaParser;
+import app.ExpressionProcessor;
 import org.antlr.v4.runtime.Token;
 
 public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
@@ -28,7 +29,7 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
         int column = idToken.getCharPositionInLine() + 1; //0 indexed +1
         String id = ctx.getChild(1).getText();
 
-        //Mainting vars list for semantic error reporting
+        //Maintaining vars list for semantic error reporting
         if (vars.contains(id)) {
             semanticErrors.add("Error: variable \"" + id + "\" already declared (line: " + line + ", column: " + column + ")");
         }

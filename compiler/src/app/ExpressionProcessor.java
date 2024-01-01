@@ -16,6 +16,11 @@ public class ExpressionProcessor {
         this.list = list;
         values = new HashMap<>();
     }
+    public ExpressionProcessor(Expression expression) {
+        this.list = new ArrayList<>();
+        this.list.add(expression);
+        values = new HashMap<>();
+    }
 
     public List<String> getEvaluationResults() {
         List<String> evaluations = new ArrayList<>();
@@ -24,6 +29,7 @@ public class ExpressionProcessor {
             if (e instanceof VariableDeclaration) {
                 VariableDeclaration decl = (VariableDeclaration)e;
                 values.put(decl.id, decl.value);
+                System.out.println(decl.id + " declard with value " + decl.value);
             }
             else { //e instance of Number, text, Bool, Addition, Subtraction
                 String input = e.toString();
