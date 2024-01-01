@@ -1,5 +1,6 @@
 import BasicJavaBaseVisitor;
-import ;
+import java.util.List;
+impot org.antlr.v4.runtime.Token;
 
 public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     private List<String> vars; //stores all the variables declared in the program so far
@@ -72,7 +73,9 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     }
 	@Override 
     public T visitAddition(BasicJavaParser.AdditionContext ctx) {
-        return visitChildren(ctx);
+        Expression left = visit(ctx.getChild(0));
+        Expression right = visit(ctx.getChild(2));
+        return new Addition(left, right);
     }
 	@Override 
     public T visitVariable(BasicJavaParser.VariableContext ctx) {
@@ -88,7 +91,9 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     }
 	@Override 
     public T visitSubtraction(BasicJavaParser.SubtractionContext ctx) {
-        return visitChildren(ctx);
+        Expression left = visit(ctx.getChild(0));
+        Expression right = visit(ctx.getChild(2));
+        return new Subtraction(left, right);
     }
 	@Override 
     public T visitNumber(BasicJavaParser.NumberContext ctx) {
