@@ -1,10 +1,15 @@
 import BasicJavaBaseVisitor;
 import java.util.List;
-impot org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.Token;
 
 public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     private List<String> vars; //stores all the variables declared in the program so far
     private List<String> semanticErrors;
+
+    public AntlrToExpression(List<String> semanticErrors) {
+        vars = new ArrayList<>();
+        this.semanticErrors = semanticErrors;
+    }
 
 	@Override 
     public T visitDeclarating(BasicJavaParser.DeclaratingContext ctx) {
