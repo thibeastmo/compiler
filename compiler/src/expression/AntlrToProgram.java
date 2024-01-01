@@ -1,10 +1,17 @@
+package expression;
+
+import antlr.BasicJavaBaseVisitor;
+import antlr.BasicJavaParser;
+import app.Program;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class AntlrToProgram extends BasicJavaBaseVisitor<Program> {
 
     public List<String> semanticErrors; // to be accessed by the main application program
 	@Override
-    public T visitProgram(BasicJavaParser.ProgramContext ctx) {
+    public Program visitProgram(BasicJavaParser.ProgramContext ctx) {
         Program prog = new Program();
 
         semanticErrors = new ArrayList<>();

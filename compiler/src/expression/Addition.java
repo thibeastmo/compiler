@@ -1,8 +1,10 @@
+package expression;
+
 public class Addition extends Expression {
     public Expression left;
-    public Experession right;
+    public Expression right;
     
-    public Addition(Experession left, Experession right) {
+    public Addition(Expression left, Expression right) {
         this.left = left;
         this.right = right;
     }

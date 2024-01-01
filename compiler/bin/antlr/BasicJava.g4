@@ -1,5 +1,9 @@
 grammar BasicJava;
 
+@header {
+package antlr;
+}
+
 prog
     :   (declarating | expression)+ EOF    # Program
     ;

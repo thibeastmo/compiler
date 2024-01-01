@@ -1,8 +1,14 @@
-import BasicJavaParser;
-import BasicJavaLexer;
-import org.antlr4.runtime.CharStream;
-import org.antlr4.runtime.CharStreams;
-import org.antlr4.runtime.CommonTokenStream;
+package antlr;
+
+import app.ExpressionProcessor;
+import app.Program;
+import expression.AntlrToProgram;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+
+import java.io.IOException;
 
 public class BasicJavaApp {
     public static void main(String[] args) {
@@ -49,6 +55,6 @@ public class BasicJavaApp {
             e.printStackTrace();
         }
 
-        return;
+        return parser;
     }
 }

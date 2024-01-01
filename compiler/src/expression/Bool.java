@@ -1,12 +1,14 @@
+package expression;
+
 public class Bool extends Expression {
     boolean bool;
 
-    public Number(boolean bool) {
+    public Bool(boolean bool) {
         this.bool = bool;
     }
 
     @Override
     public String toString() {
-        return bool.toString();
+        return String.valueOf(bool);
     }
 }

@@ -1,4 +1,12 @@
-import java.util.List;
+package app;
+
+import expression.Expression;
+import expression.Number;
+import expression.VariableDeclaration;
+
+import java.util.*;
+
+import expression.*;
 
 public class ExpressionProcessor {
     List<Expression> list;
@@ -19,7 +27,7 @@ public class ExpressionProcessor {
             }
             else { //e instance of Number, text, Bool, Addition, Subtraction
                 String input = e.toString();
-                int result = getEvalResult(e);
+                Object result = getEvalResult(e);
                 evaluations.add(input + " is " + result);
             }
         }
@@ -27,8 +35,8 @@ public class ExpressionProcessor {
         return evaluations;
     }
 
-    private object getEvalResult(Expression e) {
-        object result = 0;
+    private Object getEvalResult(Expression e) {
+        Object result = 0;
 
         if (e instanceof Number) {
             Number num = (Number) e;
@@ -46,14 +54,14 @@ public class ExpressionProcessor {
         }
         else if (e instanceof Addition) {
             Addition add = (Addition) e;
-            int left = getEvalResult(add.left);
-            int right = getEvalResult(add.right);
+            int left = (Integer)getEvalResult(add.left);
+            int right = (Integer)getEvalResult(add.right);
             result = left + right;
         }
         else {
             Subtraction add = (Subtraction) e;
-            int left = getEvalResult(add.left);
-            int right = getEvalResult(add.right);
+            int left = (Integer)getEvalResult(add.left);
+            int right = (Integer)getEvalResult(add.right);
             result = left - right;
         }
 
