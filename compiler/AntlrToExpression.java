@@ -8,7 +8,7 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
 
     public AntlrToExpression(List<String> semanticErrors) {
         vars = new ArrayList<>();
-        this.semanticErrors = semanticErrors;
+        this.semanticErrors = semanticErrors; //semanticErrors of a parent node
     }
 
 	@Override 
