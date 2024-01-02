@@ -1,7 +1,6 @@
 int i = 5;
 int j = 7;
 function int sum(int x, int y) {
-    int something = 8;
     return x + y;
 }
 int theSum = sum(i, j);

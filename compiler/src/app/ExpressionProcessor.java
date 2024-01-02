@@ -11,6 +11,7 @@ import expression.*;
 public class ExpressionProcessor {
     List<Expression> list;
     public Map<String, Object> values; //symbol table for storing values of variables
+    public List<MethodDeclaration> methods;
 
     public ExpressionProcessor(List<Expression> list) {
         this.list = list;
@@ -26,7 +27,10 @@ public class ExpressionProcessor {
                 values.put(decl.id, decl.value);
                 System.out.println(decl.id + " declard with value " + decl.value);
             }
-            else if (e != null) { //e instance of Number, text, Bool, Addition, Subtraction
+            else if (e instanceof MethodDeclaration) {
+                methods.add((MethodDeclaration) e);
+            }
+            else if (e != null) { //e instance of Number, text, Bool, Addition, Subtraction, MethodCall
                 String input = e.toString();
                 Object result = getEvalResult(e);
                 String evaluation = input + " is " + result;
@@ -60,11 +64,22 @@ public class ExpressionProcessor {
             int right = (Integer)getEvalResult(add.right);
             result = left + right;
         }
-        else {
+        else if (e instanceof Subtraction){
             Subtraction add = (Subtraction) e;
             int left = (Integer)getEvalResult(add.left);
             int right = (Integer)getEvalResult(add.right);
             result = left - right;
+        }
+        else {
+            //method call
+            MethodCall methodCall = (MethodCall) e;
+            Optional<MethodDeclaration> optionalMethodDeclaration = methods.stream().findFirst();
+            if (optionalMethodDeclaration.isEmpty()) {
+                System.err.println("Could not find method with id " + methodCall.methodId);
+                return null;
+            }
+            var methodDeclaration = optionalMethodDeclaration.get();
+            result = getEvalResult(methodDeclaration.statement);
         }
 
         return result;

@@ -47,14 +47,14 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
         }
         else if (type.equals("int")) {
             final int calculationPart = 3;
-            int value = 0;
+            Number value = new Number(0);
             //expression can either be addition or subtraction or integer
             ParseTree child = ctx.children.get(calculationPart);
             if (child instanceof BasicJavaParser.NumberContext) {
-                value = Integer.parseInt(valueText);
+                value = new Number(Integer.parseInt(valueText));
             }
             else if (child instanceof BasicJavaParser.MethodCallContext) {
-                return visitMethodCall((BasicJavaParser.MethodCallContext) child); //TODO: create this for string and boolean
+                value = (Number) visitMethodCall((BasicJavaParser.MethodCallContext) child); //TODO: create this for string and boolean
             }
             else {
                 if (child instanceof BasicJavaParser.AdditionContext) {
@@ -117,7 +117,7 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
 	@Override 
     public Expression visitMethodCall(BasicJavaParser.MethodCallContext ctx) {
         Expression argumentListExpression = visitArgumentList((BasicJavaParser.ArgumentListContext) ctx.children.get(2));
-        return new MethodCall(argumentListExpression);
+        return visitChildren(ctx);
     }
 	@Override 
     public Expression visitArgumentList(BasicJavaParser.ArgumentListContext ctx) {
@@ -132,10 +132,8 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     }
 	@Override 
     public Expression visitStatement(BasicJavaParser.StatementContext ctx) {
-        if (ctx.children.get(0).getText().equals("return")) {
-
-        }
-        return visitChildren(ctx);
+        ParseTree child = ctx.children.get(1);
+        return visit(child);
     }
 	@Override 
     public Expression visitIf_statement(BasicJavaParser.If_statementContext ctx) {
