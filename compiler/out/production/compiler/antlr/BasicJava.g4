@@ -14,7 +14,7 @@ declarating
     ;
 
 variableDeclaration
-    :   type ID '=' expression ';'  # Declaration
+    :   type ID '=' (expression | methodCall) ';'  # Declaration
     ;
 
 methodDeclaration

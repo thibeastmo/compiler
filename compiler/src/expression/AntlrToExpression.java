@@ -1,16 +1,18 @@
 package expression;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import antlr.BasicJavaBaseVisitor;
 import antlr.BasicJavaParser;
-import app.ExpressionProcessor;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     private List<String> vars; //stores all the variables declared in the program so far
+    private List<String> methods; //stores all the methods declared in the program so far
     private List<String> semanticErrors;
 
     public AntlrToExpression(List<String> semanticErrors) {
@@ -50,6 +52,9 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
             if (child instanceof BasicJavaParser.NumberContext) {
                 value = Integer.parseInt(valueText);
             }
+            else if (child instanceof BasicJavaParser.MethodCallContext) {
+                return visitMethodCall((BasicJavaParser.MethodCallContext) child); //TODO: create this for string and boolean
+            }
             else {
                 if (child instanceof BasicJavaParser.AdditionContext) {
                     return visitAddition((BasicJavaParser.AdditionContext)child);
@@ -65,7 +70,22 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     }
     @Override 
     public Expression visitMethodDeclaration(BasicJavaParser.MethodDeclarationContext ctx) {
-        return visitChildren(ctx);
+        Token idToken = ctx.ID().getSymbol(); // same as ctx.getChild(1).getSymbol()
+        int line = idToken.getLine();
+        int column = idToken.getCharPositionInLine() + 1; //0 indexed +1
+        String id = ctx.getChild(1).getText();
+        //Maintaining methods list for semantic error reporting
+        if (methods.contains(id)) {
+            semanticErrors.add("Error: method \"" + id + "\" already declared (line: " + line + ", column: " + column + ")");
+        }
+        else {
+            methods.add(id);
+        }
+        String type = ctx.getChild(0).getText();
+        Expression methodDeclarationParameterListExpression = visitMethodDeclarationParameterList((BasicJavaParser.MethodDeclarationParameterListContext) ctx.getChild(3));
+        Expression statement = visitStatement((BasicJavaParser.StatementContext) ctx.getChild(7));
+
+        return new MethodDeclaration(id, type, methodDeclarationParameterListExpression, statement);
     }
 	@Override 
     public Expression visitType(BasicJavaParser.TypeContext ctx) {
@@ -73,15 +93,30 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     }
 	@Override 
     public Expression visitMethodDeclarationParameterList(BasicJavaParser.MethodDeclarationParameterListContext ctx) {
-        return visitChildren(ctx);
+        List<Expression> parameters = new ArrayList<>();
+        for (int i = 0; i < ctx.getChildCount(); i++) {
+            ParseTree child = ctx.children.get(i);
+            if (child instanceof BasicJavaParser.VariableContext) {
+                parameters.add(visitVariable((BasicJavaParser.VariableContext) child));
+            }
+        }
+        return new MethodDeclarationParameterList(parameters);
     }
 	@Override 
     public Expression visitMethodCall(BasicJavaParser.MethodCallContext ctx) {
-        return visitChildren(ctx);
+        Expression argumentListExpression = visitArgumentList((BasicJavaParser.ArgumentListContext) ctx.children.get(2));
+        return new MethodCall(argumentListExpression);
     }
 	@Override 
     public Expression visitArgumentList(BasicJavaParser.ArgumentListContext ctx) {
-        return visitChildren(ctx);
+        List<Expression> arguments = new ArrayList<>();
+        for (int i = 0; i < ctx.getChildCount(); i++) {
+            ParseTree child = ctx.children.get(i);
+            if (child instanceof BasicJavaParser.VariableContext) {
+                arguments.add(visitVariable((BasicJavaParser.VariableContext) child));
+            }
+        }
+        return new ArgumentList(arguments);
     }
 	@Override 
     public Expression visitStatement(BasicJavaParser.StatementContext ctx) {

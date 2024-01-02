@@ -16,11 +16,6 @@ public class ExpressionProcessor {
         this.list = list;
         values = new HashMap<>();
     }
-    public ExpressionProcessor(Expression expression) {
-        this.list = new ArrayList<>();
-        this.list.add(expression);
-        values = new HashMap<>();
-    }
 
     public List<String> getEvaluationResults() {
         List<String> evaluations = new ArrayList<>();
