@@ -2,9 +2,9 @@ package expression;
 
 public class MethodCall extends Expression {
     public String methodId;
-    public ArgumentList argumentList;
+    public Expression argumentList;
 
-    public MethodCall(String methodId, ArgumentList argumentList) {
+    public MethodCall(String methodId, Expression argumentList) {
         this.methodId = methodId;
         this.argumentList = argumentList;
     }

@@ -54,7 +54,7 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
                 value = new Number(Integer.parseInt(valueText));
             }
             else if (child instanceof BasicJavaParser.MethodCallContext) {
-                value = (Number) visitMethodCall((BasicJavaParser.MethodCallContext) child); //TODO: create this for string and boolean
+                return visitMethodCall((BasicJavaParser.MethodCallContext) child); //TODO: create this for string and boolean
             }
             else {
                 if (child instanceof BasicJavaParser.AdditionContext) {
@@ -117,7 +117,8 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
 	@Override 
     public Expression visitMethodCall(BasicJavaParser.MethodCallContext ctx) {
         Expression argumentListExpression = visitArgumentList((BasicJavaParser.ArgumentListContext) ctx.children.get(2));
-        return visitChildren(ctx);
+        String methodId = ctx.getChild(0).getText();
+        return new MethodCall(methodId, argumentListExpression);
     }
 	@Override 
     public Expression visitArgumentList(BasicJavaParser.ArgumentListContext ctx) {

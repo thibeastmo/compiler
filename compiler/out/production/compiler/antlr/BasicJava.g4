@@ -41,9 +41,7 @@ argumentList
     ;
 
 statement
-    :   ID ';'
-    |   'return' expression ';'
-    |   if_statement
+    :   'return' expression ';'
     ;
 
 

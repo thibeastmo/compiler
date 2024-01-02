@@ -16,6 +16,7 @@ public class ExpressionProcessor {
     public ExpressionProcessor(List<Expression> list) {
         this.list = list;
         values = new HashMap<>();
+        methods = new ArrayList<>();
     }
 
     public List<String> getEvaluationResults() {
@@ -44,15 +45,8 @@ public class ExpressionProcessor {
     private Object getEvalResult(Expression e) {
         Object result = 0;
 
-        if (e instanceof Number) {
-            Number num = (Number) e;
-            result = num.num;
-        }
-        else if (e instanceof Text) {
-            result = (Text) e;
-        }
-        else if (e instanceof Bool) {
-            result = (Bool) e;
+        if (e instanceof Number || e instanceof Text || e instanceof Bool) {
+            result = e;
         }
         else if (e instanceof Variable) {
             Variable var = (Variable) e;
@@ -60,28 +54,41 @@ public class ExpressionProcessor {
         }
         else if (e instanceof Addition) {
             Addition add = (Addition) e;
-            int left = (Integer)getEvalResult(add.left);
-            int right = (Integer)getEvalResult(add.right);
+            int left = getIntegerFromExpression(add.left);
+            int right = getIntegerFromExpression(add.right);
             result = left + right;
         }
         else if (e instanceof Subtraction){
             Subtraction add = (Subtraction) e;
-            int left = (Integer)getEvalResult(add.left);
-            int right = (Integer)getEvalResult(add.right);
+            int left = getIntegerFromExpression(add.left);
+            int right = getIntegerFromExpression(add.right);
             result = left - right;
         }
-        else {
-            //method call
+        else { //method call -> here it makes a copy of the already existing variable and puts it in the same list as the original variable --> after that it gets the evalresult
             MethodCall methodCall = (MethodCall) e;
-            Optional<MethodDeclaration> optionalMethodDeclaration = methods.stream().findFirst();
+            Optional<MethodDeclaration> optionalMethodDeclaration = methods.stream().filter(m -> m.id.equals(methodCall.methodId)).findFirst();
             if (optionalMethodDeclaration.isEmpty()) {
                 System.err.println("Could not find method with id " + methodCall.methodId);
                 return null;
             }
             var methodDeclaration = optionalMethodDeclaration.get();
+            for (int i = 0; i < ((ArgumentList)methodCall.argumentList).arguments.size(); i++) {
+                Variable var = (Variable) ((ArgumentList)methodCall.argumentList).arguments.get(i);
+                Object argumentValue = values.get(var.id);
+                Variable methodVar = (Variable) ((MethodDeclarationParameterList)methodDeclaration.methodDeclarationParameterList).parameters.get(i);
+                values.put(methodVar.id, argumentValue);
+            }
             result = getEvalResult(methodDeclaration.statement);
         }
 
         return result;
+    }
+
+    private Integer getIntegerFromExpression(Expression expression) {
+        Object evalResultLeft = getEvalResult(expression);
+        if (evalResultLeft instanceof Number) {
+            return ((Number)evalResultLeft).num;
+        }
+        return (Integer)evalResultLeft;
     }
 }
