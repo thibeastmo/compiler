@@ -7,7 +7,7 @@
 		"antlr": "java -cp \".;lib/antlr-4.9.3-complete.jar\" org.antlr.v4.Tool",
 		"antlr-gen": "cd src/antlr/ && java -cp \".;../../lib/antlr-4.9.3-complete.jar\" org.antlr.v4.Tool -visitor BasicJava.g4",
 		"java-gen": "cd src/antlr/ && javac -cp \".;../../lib/antlr-4.9.3-complete.jar\" BasicJava*.java",
-		"grun-gui": "cd src/antlr/ && java -cp \".;../../lib/antlr-4.9.3-complete.jar;..\" org.antlr.v4.gui.TestRig antlr.BasicJava prog -gui ../app/tests/test1.txt",
+		"grun-gui": "cd src/antlr/ && java -cp \".;../../lib/antlr-4.9.3-complete.jar;..\" org.antlr.v4.gui.TestRig antlr.BasicJava prog -gui ../app/tests/test2.txt",
 		"grun": "cd src/antlr/ && java -cp \".;../../lib/antlr-4.9.3-complete.jar\" org.antlr.v4.gui.TestRig",
 		"antlr-compile": "lib/antlr-4.9.3-complete.jar",
 		"gen-compile-debug": "npm run antlr-gen && npm run java-gen && npm run grun-gui",

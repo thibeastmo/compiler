@@ -5,7 +5,7 @@ package antlr;
 }
 
 prog
-    :   (declarating | expression | if_statement | while_statement)+ EOF    # Program
+    :   (declarating | statement)+ EOF    # Program
     ;
 
 declarating
@@ -14,7 +14,7 @@ declarating
     ;
 
 variableDeclaration
-    :   type ID '=' (expression | methodCall | condition) ';'  # Declaration
+    :   type? ID '=' (expression | methodCall | condition) ';'  # Declaration
     ;
 
 methodDeclaration
@@ -42,9 +42,9 @@ argumentList
 
 statement
     :   'return' (expression | condition) ';'
-    |   variableDeclaration
     |   if_statement
     |   while_statement
+    |   declarating
     ;
 
 

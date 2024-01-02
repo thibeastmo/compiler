@@ -94,6 +94,7 @@ public class ExpressionProcessor {
             boolean condition = isConditionTrue(whileDeclaration.condition);
             while (condition) {
                 result = getEvalResult(whileDeclaration.statement);
+                condition = isConditionTrue(whileDeclaration.condition);
             }
         }
 
