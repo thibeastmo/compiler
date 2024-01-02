@@ -90,6 +90,13 @@ public class ExpressionProcessor {
                 result = getEvalResult(ifDeclaration.elseStatement);
             }
         }
+        else if (e instanceof WhileDeclaration) {
+            WhileDeclaration whileDeclaration = (WhileDeclaration) e;
+            Object argumentValue = values.get(whileDeclaration.id);
+            while ((Boolean)argumentValue) {
+                result = getEvalResult(whileDeclaration.statement);
+            }
+        }
 
         return result;
     }

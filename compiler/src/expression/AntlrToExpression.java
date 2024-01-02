@@ -147,7 +147,7 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
         ParseTree conditionChild = ctx.children.get(2);
 
         BasicJavaParser.StatementContext statementContext = (BasicJavaParser.StatementContext) ctx.children.get(5);
-        Expression ifStatement = visitStatement(statementContext);;
+        Expression ifStatement = visitStatement(statementContext);
         Expression elseStatement = null;
         boolean firstOneFound = false;
         for (int i = 5; i < ctx.getChildCount() - 1; i++) {
@@ -163,7 +163,11 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     }
 	@Override
     public Expression visitWhile_statement(BasicJavaParser.While_statementContext ctx) {
-        return visitChildren(ctx);
+        ParseTree conditionChild = ctx.children.get(2);
+
+        BasicJavaParser.StatementContext statementContext = (BasicJavaParser.StatementContext) ctx.children.get(5);
+        Expression whileStatement = visitStatement(statementContext);
+        return new WhileDeclaration(conditionChild.getText(), whileStatement);
     }
 	@Override 
     public Expression visitAddition(BasicJavaParser.AdditionContext ctx) {
