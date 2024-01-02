@@ -43,7 +43,6 @@ argumentList
 statement
     :   ID ';'
     |   'return' expression ';'
-    |   methodCall ';'
     |   if_statement
     ;
 

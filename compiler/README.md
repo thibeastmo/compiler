@@ -13,3 +13,7 @@
 3. `npm run java-gen` --> Compilen van java bestanden
 4. `npm run grun` --> Om te bevestigen dat TestRig werkt
 5. `npm run grun-gui` --> Om antlr te debuggen
+
+
+## Opgelet!
+- Een methode/functie moeten gedeclareerd worden vooraleer het opgeroepen kan worden

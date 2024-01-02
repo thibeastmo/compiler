@@ -12,11 +12,12 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     private List<String> vars; //stores all the variables declared in the program so far
-    private List<String> methods; //stores all the methods declared in the program so far
+    private List<String> methods; //stores all the methods and variables in methods declared in the program so far -> not recursive
     private List<String> semanticErrors;
 
     public AntlrToExpression(List<String> semanticErrors) {
         vars = new ArrayList<>();
+        methods = new ArrayList<>();
         this.semanticErrors = semanticErrors; //semanticErrors of a parent node
     }
 
@@ -24,7 +25,7 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     public Expression visitDeclarating(BasicJavaParser.DeclaratingContext ctx) {
         return visitChildren(ctx);
     }
-	@Override 
+	@Override //visitDeclaration => visitVariableDeclaration
     public Expression visitDeclaration(BasicJavaParser.DeclarationContext ctx) {
         //ID() is a method generated to correspond to the token ID in the source grammar.
         Token idToken = ctx.ID().getSymbol(); // same as ctx.getChild(1).getSymbol()
@@ -73,7 +74,7 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
         Token idToken = ctx.ID().getSymbol(); // same as ctx.getChild(1).getSymbol()
         int line = idToken.getLine();
         int column = idToken.getCharPositionInLine() + 1; //0 indexed +1
-        String id = ctx.getChild(1).getText();
+        String id = ctx.getChild(2).getText();
         //Maintaining methods list for semantic error reporting
         if (methods.contains(id)) {
             semanticErrors.add("Error: method \"" + id + "\" already declared (line: " + line + ", column: " + column + ")");
@@ -81,8 +82,19 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
         else {
             methods.add(id);
         }
-        String type = ctx.getChild(0).getText();
-        Expression methodDeclarationParameterListExpression = visitMethodDeclarationParameterList((BasicJavaParser.MethodDeclarationParameterListContext) ctx.getChild(3));
+        String type = ctx.getChild(1).getText();
+        Expression methodDeclarationParameterListExpression = visitMethodDeclarationParameterList((BasicJavaParser.MethodDeclarationParameterListContext) ctx.getChild(4));
+        //add variables in method before statement gets initialized
+        for (Expression methodDeclarationParameterListExpressionItem : ((MethodDeclarationParameterList)methodDeclarationParameterListExpression).parameters) {
+            String parameterId = methodDeclarationParameterListExpressionItem.toString();
+            if (vars.contains(parameterId)) {
+                semanticErrors.add("Error: variable \"" + id + "\" already declared (line: " + line + ", column: " + column + ")");
+            }
+            else {
+                vars.add(parameterId);
+            }
+        }
+
         Expression statement = visitStatement((BasicJavaParser.StatementContext) ctx.getChild(7));
 
         return new MethodDeclaration(id, type, methodDeclarationParameterListExpression, statement);
@@ -96,8 +108,8 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
         List<Expression> parameters = new ArrayList<>();
         for (int i = 0; i < ctx.getChildCount(); i++) {
             ParseTree child = ctx.children.get(i);
-            if (child instanceof BasicJavaParser.VariableContext) {
-                parameters.add(visitVariable((BasicJavaParser.VariableContext) child));
+            if (child instanceof BasicJavaParser.TypeContext) {
+                parameters.add(new Variable(ctx.children.get(i+1).getText()));
             }
         }
         return new MethodDeclarationParameterList(parameters);
@@ -120,6 +132,9 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     }
 	@Override 
     public Expression visitStatement(BasicJavaParser.StatementContext ctx) {
+        if (ctx.children.get(0).getText().equals("return")) {
+
+        }
         return visitChildren(ctx);
     }
 	@Override 

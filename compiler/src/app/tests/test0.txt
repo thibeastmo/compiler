@@ -1,7 +1,9 @@
 int i = 5;
 int j = 7;
+function int sum(int x, int y) {
+    return x + y;
+}
 int theSum = sum(i, j);
-function int sum(int x, int y) {return x + y;}
 int added = i + j;
 int subtracted = i - j;
 int addedSubtracted = i + j - 3;
