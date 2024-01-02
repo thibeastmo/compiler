@@ -25,6 +25,11 @@
 Optioneel:
 7. Het is mogelijk om een parameter mee te geven met daarin de locatie van het test bestand. (Een default test bestand zal geselecteerd worden indien je geen parameter mee geeft) --> Bij 'program arguments' moet je dan 'File prompt' selecteren
 
+### Er kunnen 4 testbestanden gebruikt worden: (te vinden in src/app/tests/)
+- test0.txt -> geen errors
+- test1.txt -> geen errors
+- test2.txt -> error omdat Bool niet kan gecast worden (zou een uitbreiding zijn maar al wel g4 voorbereidingen voorzien)
+- test3.txt -> geen errors
 
 ## Opgelet!
 - Een methode/functie moet gedeclareerd worden vooraleer het opgeroepen kan worden

@@ -9,12 +9,13 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class BasicJavaApp {
     public static void main(String[] args) {
         if (args == null || args.length < 1) {
             args = new String[1];
-            args[0] = "./src/app/tests/test2.txt"; //to test faster
+            args[0] = "./src/app/tests/test3.txt"; //to test faster
         }
         if (args.length != 1) {
             System.err.print("Usage: file name");
@@ -31,9 +32,9 @@ public class BasicJavaApp {
             Program prog = progVisitor.visit(antlrAST);
 
             if (progVisitor.semanticErrors.isEmpty()) {
-                ExpressionProcessor ep = new ExpressionProcessor(prog.expressions);
+                ExpressionProcessor ep = new ExpressionProcessor();
                 try {
-                    for (String evaluation : ep.getEvaluationResults()) {
+                    for (String evaluation : ep.getEvaluationResults(prog.expressions, new ArrayList<>())) {
                         System.out.println(evaluation);
                     }
                 } catch (Exception e) {

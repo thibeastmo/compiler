@@ -1,12 +1,14 @@
 package expression;
 
+import java.util.List;
+
 public class WhileDeclaration extends Expression {
     public Condition condition;
 
-    public Expression statement;
+    public List<Expression> statements;
 
-    public WhileDeclaration(Condition condition, Expression statement) {
+    public WhileDeclaration(Condition condition, List<Expression> statements) {
         this.condition = condition;
-        this.statement = statement;
+        this.statements = statements;
     }
 }

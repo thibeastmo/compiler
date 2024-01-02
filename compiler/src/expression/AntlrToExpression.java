@@ -12,12 +12,12 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 
 public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
-    private List<String> vars; //stores all the variables declared in the program so far
+    private Map<String, String> vars; //stores all the variables declared in the program so far
     private List<String> methods; //stores all the methods and variables in methods declared in the program so far -> not recursive
     private List<String> semanticErrors;
 
     public AntlrToExpression(List<String> semanticErrors) {
-        vars = new ArrayList<>();
+        vars = new HashMap<>();
         methods = new ArrayList<>();
         this.semanticErrors = semanticErrors; //semanticErrors of a parent node
     }
@@ -28,46 +28,60 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     }
 	@Override //visitDeclaration => visitVariableDeclaration
     public Expression visitDeclaration(BasicJavaParser.DeclarationContext ctx) {
+        String type = null;
+        String valueText = null;
+        String id = null;
+        boolean reinitialized = false;
+        if (ctx.children.get(0) instanceof BasicJavaParser.TypeContext) {
+            type = ctx.getChild(0).getText();
+            valueText = ctx.getChild(3).getText();
+            id = ctx.getChild(1).getText();
+        }
+        else {
+            valueText = ctx.getChild(2).getText();
+            id = ctx.getChild(0).getText();
+            type = vars.get(id);
+            reinitialized = true;
+        }
         //ID() is a method generated to correspond to the token ID in the source grammar.
         Token idToken = ctx.ID().getSymbol(); // same as ctx.getChild(1).getSymbol()
         int line = idToken.getLine();
         int column = idToken.getCharPositionInLine() + 1; //0 indexed +1
-        String id = ctx.getChild(1).getText();
 
         //Maintaining vars list for semantic error reporting
-        if (vars.contains(id)) {
+        if (vars.containsKey(id) && !reinitialized) {
             semanticErrors.add("Error: variable \"" + id + "\" already declared (line: " + line + ", column: " + column + ")");
         }
-        else {
-            vars.add(id);
+        else if (!vars.containsKey(id)){
+            vars.put(id, type);
         }
-        String type = ctx.getChild(0).getText();
-        String valueText = ctx.getChild(3).getText();
         if (type.equals("text")) {
-            return new VariableDeclaration(id, type, valueText);
+            return new VariableDeclaration(id, type, valueText, reinitialized);
         }
         else if (type.equals("int")) {
-            final int calculationPart = 3;
-            Number value = new Number(0);
+            final int calculationPart = reinitialized ? 2 : 3;
+            Object value = new Number(0);
             //expression can either be addition or subtraction or integer
             ParseTree child = ctx.children.get(calculationPart);
             if (child instanceof BasicJavaParser.NumberContext) {
                 value = new Number(Integer.parseInt(valueText));
             }
             else if (child instanceof BasicJavaParser.MethodCallContext) {
-                return visitMethodCall((BasicJavaParser.MethodCallContext) child); //TODO: create this for string and boolean
+                value = visitMethodCall((BasicJavaParser.MethodCallContext) child); //TODO: create this for string and boolean
             }
             else {
                 if (child instanceof BasicJavaParser.AdditionContext) {
-                    return visitAddition((BasicJavaParser.AdditionContext)child);
+                    value = visitAddition((BasicJavaParser.AdditionContext)child);
                 }
-                return visitSubtraction((BasicJavaParser.SubtractionContext)child);
+                else {
+                    value = visitSubtraction((BasicJavaParser.SubtractionContext)child);
+                }
             }
-            return new VariableDeclaration(id, type, value);
+            return new VariableDeclaration(id, type, value, reinitialized);
         }
         else {
             //boolean
-            return new VariableDeclaration(id, type, valueText.equals("true"));
+            return new VariableDeclaration(id, type, valueText.equals("true"), reinitialized);
         }
     }
     @Override 
@@ -88,17 +102,24 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
         //add variables in method before statement gets initialized
         for (Expression methodDeclarationParameterListExpressionItem : ((MethodDeclarationParameterList)methodDeclarationParameterListExpression).parameters) {
             String parameterId = methodDeclarationParameterListExpressionItem.toString();
-            if (vars.contains(parameterId)) {
+            if (vars.containsKey(parameterId)) {
                 semanticErrors.add("Error: variable \"" + id + "\" already declared (line: " + line + ", column: " + column + ")");
             }
             else {
-                vars.add(parameterId);
+                vars.put(parameterId, type);
             }
         }
 
-        Expression statement = visitStatement((BasicJavaParser.StatementContext) ctx.getChild(7));
+        List<Expression> statements = new ArrayList<>();
+        //TODO; 7 moet aangepast worden afhankelijk van aantal parameters
+        int i = 7;
+        for (; i < ctx.getChildCount() - 1; i++) {
+            if (ctx.children.get(i) instanceof BasicJavaParser.StatementContext statementContext) {
+                statements.add(visitStatement(statementContext));
+            }
+        }
 
-        return new MethodDeclaration(id, type, methodDeclarationParameterListExpression, statement);
+        return new MethodDeclaration(id, type, methodDeclarationParameterListExpression, statements);
     }
 	@Override 
     public Expression visitType(BasicJavaParser.TypeContext ctx) {
@@ -134,40 +155,44 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     }
 	@Override 
     public Expression visitStatement(BasicJavaParser.StatementContext ctx) {
-        int i = 0;
-        ParseTree child = null;
-        do {
-            child = ctx.children.get(i);
-            i++;
-        } while (child == null || child instanceof TerminalNodeImpl);
-        return visit(child);
+        return visit(ctx.children.get(0));
     }
 	@Override 
     public Expression visitIf_statement(BasicJavaParser.If_statementContext ctx) {
         Condition conditionChild = (Condition) visitCondition(ctx.condition());
 
         BasicJavaParser.StatementContext statementContext = (BasicJavaParser.StatementContext) ctx.children.get(5);
-        Expression ifStatement = visitStatement(statementContext);
-        Expression elseStatement = null;
+        List<Expression> ifStatements = new ArrayList<>();
+        List<Expression> elseStatements = new ArrayList<>();
         boolean firstOneFound = false;
+        boolean beginElseStatements = false;
         for (int i = 5; i < ctx.getChildCount() - 1; i++) {
             if (ctx.children.get(i) instanceof BasicJavaParser.StatementContext) {
-                if (!firstOneFound) firstOneFound = true;
-                else {
-                    elseStatement = visitStatement((BasicJavaParser.StatementContext) ctx.children.get(i));
+                if (!firstOneFound) {
+                    firstOneFound = true;
+                    elseStatements.add(visitStatement((BasicJavaParser.StatementContext) ctx.children.get(i)));
+                }
+                else if (beginElseStatements) {
+                    elseStatements.add(visitStatement((BasicJavaParser.StatementContext) ctx.children.get(i)));
                     break;
                 }
             }
+            else if (firstOneFound) {
+                beginElseStatements = true;
+            }
         }
-        return new IfDeclaration(conditionChild, ifStatement, elseStatement);
+        return new IfDeclaration(conditionChild, ifStatements, elseStatements);
     }
 	@Override
     public Expression visitWhile_statement(BasicJavaParser.While_statementContext ctx) {
         Condition conditionChild = (Condition) visitCondition(ctx.condition());
 
-        BasicJavaParser.StatementContext statementContext = (BasicJavaParser.StatementContext) ctx.children.get(5);
-        Expression whileStatement = visitStatement(statementContext);
-        return new WhileDeclaration(conditionChild, whileStatement);
+        List<Expression> statements = new ArrayList<>();
+        for (int i = 5; i < ctx.getChildCount() - 1; i++) {
+            BasicJavaParser.StatementContext statementContext = (BasicJavaParser.StatementContext) ctx.children.get(i);
+            statements.add(visitStatement(statementContext));
+        }
+        return new WhileDeclaration(conditionChild, statements);
     }
 	@Override 
     public Expression visitAddition(BasicJavaParser.AdditionContext ctx) {
@@ -182,7 +207,7 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
         int column = idToken.getCharPositionInLine() + 1; //0 indexed +1
 
         String id = ctx.getChild(0).getText();
-        if (!vars.contains(id)) {
+        if (!vars.containsKey(id)) {
             semanticErrors.add("Error: variable " + id + " not declared (line: "+line+", column: "+column+")");
         }
         return new Variable(id);

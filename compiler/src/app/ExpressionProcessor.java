@@ -10,31 +10,40 @@ import java.util.*;
 import expression.*;
 
 public class ExpressionProcessor {
-    List<Expression> list;
     public Map<String, Object> values; //symbol table for storing values of variables
     public List<MethodDeclaration> methods;
 
-    public ExpressionProcessor(List<Expression> list) {
-        this.list = list;
+    public ExpressionProcessor() {
         values = new HashMap<>();
         methods = new ArrayList<>();
     }
 
-    public List<String> getEvaluationResults() throws Exception {
-        List<String> evaluations = new ArrayList<>();
-
+    public List<String> getEvaluationResults(List<Expression> list, List<String> evaluations) throws Exception {
         for (Expression e: list) {
             if (e instanceof VariableDeclaration) {
                 VariableDeclaration decl = (VariableDeclaration)e;
-                values.put(decl.id, decl.value);
-                System.out.println(decl.id + " declared with value " + decl.value);
+                Object result = null;
+                if (decl.value instanceof Addition addition) {
+                    result = getEvalResult(addition, evaluations);
+                }
+                else if (decl.value instanceof Subtraction subtraction) {
+                    result = getEvalResult(subtraction, evaluations);
+                }
+                else if (decl.value instanceof MethodCall methodCall) {
+                    result = getEvalResult(methodCall, evaluations);
+                }
+                else {
+                    result = decl.value;
+                }
+                values.put(decl.id, result);
+                System.out.println(decl.id + " declared with value " + result);
             }
             else if (e instanceof MethodDeclaration) {
                 methods.add((MethodDeclaration) e);
             }
             else if (e != null) { //e instance of Number, text, Bool, Addition, Subtraction, MethodCall
                 String input = e.toString();
-                Object result = getEvalResult(e);
+                Object result = getEvalResult(e, evaluations);
                 String evaluation = input + " is " + result;
                 evaluations.add(evaluation);
             }
@@ -43,7 +52,7 @@ public class ExpressionProcessor {
         return evaluations;
     }
 
-    private Object getEvalResult(Expression e) throws Exception {
+    private Object getEvalResult(Expression e, List<String> evaluationResults) throws Exception {
         Object result = 0;
 
         if (e instanceof Number || e instanceof Text || e instanceof Bool) {
@@ -55,18 +64,17 @@ public class ExpressionProcessor {
         }
         else if (e instanceof Addition) {
             Addition add = (Addition) e;
-            int left = getIntegerFromExpression(add.left);
-            int right = getIntegerFromExpression(add.right);
+            int left = getIntegerFromExpression(add.left, evaluationResults);
+            int right = getIntegerFromExpression(add.right, evaluationResults);
             result = left + right;
         }
         else if (e instanceof Subtraction){
             Subtraction add = (Subtraction) e;
-            int left = getIntegerFromExpression(add.left);
-            int right = getIntegerFromExpression(add.right);
+            int left = getIntegerFromExpression(add.left, evaluationResults);
+            int right = getIntegerFromExpression(add.right, evaluationResults);
             result = left - right;
         }
-        else if (e instanceof MethodCall) { //method call -> here it makes a copy of the already existing variable and puts it in the same list as the original variable --> after that it gets the evalresult
-            MethodCall methodCall = (MethodCall) e;
+        else if (e instanceof MethodCall methodCall) { //method call -> here it makes a copy of the already existing variable and puts it in the same list as the original variable --> after that it gets the evalresult
             Optional<MethodDeclaration> optionalMethodDeclaration = methods.stream().filter(m -> m.id.equals(methodCall.methodId)).findFirst();
             if (optionalMethodDeclaration.isEmpty()) {
                 System.err.println("Could not find method with id " + methodCall.methodId);
@@ -79,56 +87,76 @@ public class ExpressionProcessor {
                 Variable methodVar = (Variable) ((MethodDeclarationParameterList)methodDeclaration.methodDeclarationParameterList).parameters.get(i);
                 values.put(methodVar.id, argumentValue);
             }
-            result = getEvalResult(methodDeclaration.statement);
+            for (var statement : methodDeclaration.statements) {
+                getEvalResult(statement, evaluationResults);
+            }
         }
         else if (e instanceof IfDeclaration ifDeclaration) {
-            boolean condition = isConditionTrue(ifDeclaration.condition);
+            boolean condition = isConditionTrue(ifDeclaration.condition, evaluationResults);
             if (condition) {
-                result = getEvalResult(ifDeclaration.statement);
+                for (var statement : ifDeclaration.ifStatements) {
+                    getEvalResult(statement, evaluationResults);
+                }
             }
             else {
-                result = getEvalResult(ifDeclaration.elseStatement);
+                for (var statement : ifDeclaration.elseStatement) {
+                    getEvalResult(statement, evaluationResults);
+                }
             }
         }
         else if (e instanceof WhileDeclaration whileDeclaration) {
-            boolean condition = isConditionTrue(whileDeclaration.condition);
+            boolean condition = isConditionTrue(whileDeclaration.condition, evaluationResults);
             while (condition) {
-                result = getEvalResult(whileDeclaration.statement);
-                condition = isConditionTrue(whileDeclaration.condition);
+                evaluationResults = getEvaluationResults(whileDeclaration.statements, evaluationResults);
+                condition = isConditionTrue(whileDeclaration.condition, evaluationResults);
             }
         }
 
         return result;
     }
 
-    private Integer getIntegerFromExpression(Expression expression) throws Exception {
-        Object evalResultLeft = getEvalResult(expression);
+    private Integer getIntegerFromExpression(Expression expression, List<String> evaluationResults) throws Exception {
+        Object evalResultLeft = getEvalResult(expression, evaluationResults);
         if (evalResultLeft instanceof Number) {
             return ((Number)evalResultLeft).num;
         }
         return (Integer)evalResultLeft;
     }
 
-    private Boolean isConditionTrue(Condition condition) throws Exception {
-        Object leftValue = getEvalResult(condition.left);
+    private Boolean isConditionTrue(Condition condition, List<String> evaluationResults) throws Exception {
+        Object leftValue = getEvalResult(condition.left, evaluationResults);
         if (condition.right == null) {
             return (Boolean) leftValue;
         }
         if (leftValue == null) {
             throw new IOException("Left expression cannot be null");
         }
-        Object rightValue = getEvalResult(condition.right);
+        Object rightValue = getEvalResult(condition.right, evaluationResults);
         if (rightValue == null) {
             throw new IOException("Left expression cannot be null");
         }
+        if (leftValue instanceof Number || leftValue instanceof Integer) {
+            int left = numberOrIntegerToInteger(leftValue);
+            int right = numberOrIntegerToInteger(rightValue);
+            return switch (condition.symbol) {
+                case "<" -> left < right;
+                case ">" -> left > right;
+                case ">=" -> left >= right;
+                case "<=" -> left <= right;
+                case "==" -> left == right;
+                case "!=" -> left != right;
+                default -> throw new Exception("Condition does not exist");
+            };
+        }
+
         return switch (condition.symbol) {
-            case "<" -> ((Number) leftValue).num < ((Number) rightValue).num;
-            case ">" -> ((Number) leftValue).num > ((Number) rightValue).num;
-            case ">=" -> ((Number) leftValue).num >= ((Number) rightValue).num;
-            case "<=" -> ((Number) leftValue).num <= ((Number) rightValue).num;
             case "==" -> Objects.equals(leftValue, rightValue);
             case "!=" -> !Objects.equals(leftValue, rightValue);
-            default -> throw new Exception("");
+            default -> throw new Exception("Condition does not exist or not suitable for these values");
         };
+    }
+    private Integer numberOrIntegerToInteger(Object x) {
+        if (x instanceof Number y) return y.num;
+        return (Integer) x;
     }
 }
