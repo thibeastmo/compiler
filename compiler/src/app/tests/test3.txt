@@ -1,0 +1,7 @@
+int i = 5;
+int j = 7;
+if (i < 7) {
+    int sum = i + j;
+} else {
+    int minus = i - j;
+}

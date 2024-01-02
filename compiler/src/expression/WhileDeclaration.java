@@ -1,12 +1,12 @@
 package expression;
 
 public class WhileDeclaration extends Expression {
-    public String id;
+    public Condition condition;
 
     public Expression statement;
 
-    public WhileDeclaration(String id, Expression statement) {
-        this.id = id;
+    public WhileDeclaration(Condition condition, Expression statement) {
+        this.condition = condition;
         this.statement = statement;
     }
 }

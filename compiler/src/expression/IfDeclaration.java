@@ -1,14 +1,14 @@
 package expression;
 
 public class IfDeclaration extends Expression {
-    public String id;
+    public Condition condition;
 
     public Expression statement;
 
     public Expression elseStatement;
 
-    public IfDeclaration(String id, Expression statement, Expression elseStatement) {
-        this.id = id;
+    public IfDeclaration(Condition condition, Expression statement, Expression elseStatement) {
+        this.condition = condition;
         this.statement = statement;
         this.elseStatement = elseStatement;
     }

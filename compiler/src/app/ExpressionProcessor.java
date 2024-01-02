@@ -4,6 +4,7 @@ import expression.Expression;
 import expression.Number;
 import expression.VariableDeclaration;
 
+import java.io.IOException;
 import java.util.*;
 
 import expression.*;
@@ -19,7 +20,7 @@ public class ExpressionProcessor {
         methods = new ArrayList<>();
     }
 
-    public List<String> getEvaluationResults() {
+    public List<String> getEvaluationResults() throws Exception {
         List<String> evaluations = new ArrayList<>();
 
         for (Expression e: list) {
@@ -42,7 +43,7 @@ public class ExpressionProcessor {
         return evaluations;
     }
 
-    private Object getEvalResult(Expression e) {
+    private Object getEvalResult(Expression e) throws Exception {
         Object result = 0;
 
         if (e instanceof Number || e instanceof Text || e instanceof Bool) {
@@ -80,20 +81,18 @@ public class ExpressionProcessor {
             }
             result = getEvalResult(methodDeclaration.statement);
         }
-        else if (e instanceof IfDeclaration) {
-            IfDeclaration ifDeclaration = (IfDeclaration) e;
-            Object argumentValue = values.get(ifDeclaration.id);
-            if ((Boolean)argumentValue) {
+        else if (e instanceof IfDeclaration ifDeclaration) {
+            boolean condition = isConditionTrue(ifDeclaration.condition);
+            if (condition) {
                 result = getEvalResult(ifDeclaration.statement);
             }
             else {
                 result = getEvalResult(ifDeclaration.elseStatement);
             }
         }
-        else if (e instanceof WhileDeclaration) {
-            WhileDeclaration whileDeclaration = (WhileDeclaration) e;
-            Object argumentValue = values.get(whileDeclaration.id);
-            while ((Boolean)argumentValue) {
+        else if (e instanceof WhileDeclaration whileDeclaration) {
+            boolean condition = isConditionTrue(whileDeclaration.condition);
+            while (condition) {
                 result = getEvalResult(whileDeclaration.statement);
             }
         }
@@ -101,11 +100,34 @@ public class ExpressionProcessor {
         return result;
     }
 
-    private Integer getIntegerFromExpression(Expression expression) {
+    private Integer getIntegerFromExpression(Expression expression) throws Exception {
         Object evalResultLeft = getEvalResult(expression);
         if (evalResultLeft instanceof Number) {
             return ((Number)evalResultLeft).num;
         }
         return (Integer)evalResultLeft;
+    }
+
+    private Boolean isConditionTrue(Condition condition) throws Exception {
+        Object leftValue = getEvalResult(condition.left);
+        if (condition.right == null) {
+            return (Boolean) leftValue;
+        }
+        if (leftValue == null) {
+            throw new IOException("Left expression cannot be null");
+        }
+        Object rightValue = getEvalResult(condition.right);
+        if (rightValue == null) {
+            throw new IOException("Left expression cannot be null");
+        }
+        return switch (condition.symbol) {
+            case "<" -> ((Number) leftValue).num < ((Number) rightValue).num;
+            case ">" -> ((Number) leftValue).num > ((Number) rightValue).num;
+            case ">=" -> ((Number) leftValue).num >= ((Number) rightValue).num;
+            case "<=" -> ((Number) leftValue).num <= ((Number) rightValue).num;
+            case "==" -> Objects.equals(leftValue, rightValue);
+            case "!=" -> !Objects.equals(leftValue, rightValue);
+            default -> throw new Exception("");
+        };
     }
 }

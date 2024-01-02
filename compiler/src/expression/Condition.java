@@ -1,14 +1,17 @@
 package expression;
 
 public class Condition extends Expression {
+    public Expression left;
+    public Expression right;
+    public String symbol;
 
-    public Bool bool;
-
-    public Condition(Bool bool) {
-        this.bool = bool;
+    public Condition(Expression left) {
+        this.left = left;
     }
 
-    public boolean getBoolean() {
-        return bool.bool;
+    public Condition(Expression left, Expression right, String symbol) {
+        this.left = left;
+        this.right = right;
+        this.symbol = symbol;
     }
 }

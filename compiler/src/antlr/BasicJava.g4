@@ -44,6 +44,7 @@ statement
     :   'return' (expression | condition) ';'
     |   variableDeclaration
     |   if_statement
+    |   while_statement
     ;
 
 
@@ -57,13 +58,13 @@ while_statement
 
 
 condition
-    :   expression '<' expression       # LessThan
-    |   expression '>' expression       # GreaterThan
-    |   expression '==' expression      # Equal
-    |   expression '<=' expression      # LessThanOrEqual
-    |   expression '>=' expression      # GreaterThanOrEqual
-    |   expression '!=' expression      # NotEqual
-    |   ID                              # Boolean
+    :   expression '<' expression
+    |   expression '>' expression
+    |   expression '==' expression
+    |   expression '<=' expression
+    |   expression '>=' expression
+    |   expression '!=' expression
+    |   ID
     ;
 
 expression

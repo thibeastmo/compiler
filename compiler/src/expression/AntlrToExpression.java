@@ -144,7 +144,7 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     }
 	@Override 
     public Expression visitIf_statement(BasicJavaParser.If_statementContext ctx) {
-        ParseTree conditionChild = ctx.children.get(2);
+        Condition conditionChild = (Condition) visitCondition(ctx.condition());
 
         BasicJavaParser.StatementContext statementContext = (BasicJavaParser.StatementContext) ctx.children.get(5);
         Expression ifStatement = visitStatement(statementContext);
@@ -159,15 +159,15 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
                 }
             }
         }
-        return new IfDeclaration(conditionChild.getText(), ifStatement, elseStatement);
+        return new IfDeclaration(conditionChild, ifStatement, elseStatement);
     }
 	@Override
     public Expression visitWhile_statement(BasicJavaParser.While_statementContext ctx) {
-        ParseTree conditionChild = ctx.children.get(2);
+        Condition conditionChild = (Condition) visitCondition(ctx.condition());
 
         BasicJavaParser.StatementContext statementContext = (BasicJavaParser.StatementContext) ctx.children.get(5);
         Expression whileStatement = visitStatement(statementContext);
-        return new WhileDeclaration(conditionChild.getText(), whileStatement);
+        return new WhileDeclaration(conditionChild, whileStatement);
     }
 	@Override 
     public Expression visitAddition(BasicJavaParser.AdditionContext ctx) {
@@ -207,5 +207,15 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
 	@Override
     public Expression visitText(BasicJavaParser.TextContext ctx) { 
         return new Text(ctx.getChild(0).getText());
+    }
+    @Override
+    public Expression visitCondition(BasicJavaParser.ConditionContext ctx) {
+        Expression left = visit(ctx.getChild(0));
+        if (ctx.getChildCount() > 2) {
+            Expression right = visit(ctx.getChild(2));
+            String symbol = ctx.getChild(1).getText();
+            return new Condition(left, right, symbol);
+        }
+        return new Condition(left);
     }
 }

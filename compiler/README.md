@@ -18,9 +18,12 @@
 1. Maak een nieuwe configuration aan in Intellij
 2. Selecteer 'Application'
 3. Selecteer app.BasicJavaApp als start class
-3. Kijk na of de working directory de compiler directory is
-4. Geef de configuration een naam
-5. Selecteer de jdk: openjdk-21 werkt
+4. Kijk na of de working directory de compiler directory is
+5. Geef de configuration een naam
+6. Selecteer de jdk: openjdk-21 werkt
+
+Optioneel:
+7. Het is mogelijk om een parameter mee te geven met daarin de locatie van het test bestand. (Een default test bestand zal geselecteerd worden indien je geen parameter mee geeft) --> Bij 'program arguments' moet je dan 'File prompt' selecteren
 
 
 ## Opgelet!

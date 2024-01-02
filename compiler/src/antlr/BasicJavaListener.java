@@ -124,89 +124,15 @@ public interface BasicJavaListener extends ParseTreeListener {
 	 */
 	void exitWhile_statement(BasicJavaParser.While_statementContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code LessThan}
-	 * labeled alternative in {@link BasicJavaParser#condition}.
+	 * Enter a parse tree produced by {@link BasicJavaParser#condition}.
 	 * @param ctx the parse tree
 	 */
-	void enterLessThan(BasicJavaParser.LessThanContext ctx);
+	void enterCondition(BasicJavaParser.ConditionContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code LessThan}
-	 * labeled alternative in {@link BasicJavaParser#condition}.
+	 * Exit a parse tree produced by {@link BasicJavaParser#condition}.
 	 * @param ctx the parse tree
 	 */
-	void exitLessThan(BasicJavaParser.LessThanContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code GreaterThan}
-	 * labeled alternative in {@link BasicJavaParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void enterGreaterThan(BasicJavaParser.GreaterThanContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code GreaterThan}
-	 * labeled alternative in {@link BasicJavaParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void exitGreaterThan(BasicJavaParser.GreaterThanContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code Equal}
-	 * labeled alternative in {@link BasicJavaParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void enterEqual(BasicJavaParser.EqualContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Equal}
-	 * labeled alternative in {@link BasicJavaParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void exitEqual(BasicJavaParser.EqualContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code LessThanOrEqual}
-	 * labeled alternative in {@link BasicJavaParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void enterLessThanOrEqual(BasicJavaParser.LessThanOrEqualContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code LessThanOrEqual}
-	 * labeled alternative in {@link BasicJavaParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void exitLessThanOrEqual(BasicJavaParser.LessThanOrEqualContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code GreaterThanOrEqual}
-	 * labeled alternative in {@link BasicJavaParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void enterGreaterThanOrEqual(BasicJavaParser.GreaterThanOrEqualContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code GreaterThanOrEqual}
-	 * labeled alternative in {@link BasicJavaParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void exitGreaterThanOrEqual(BasicJavaParser.GreaterThanOrEqualContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code NotEqual}
-	 * labeled alternative in {@link BasicJavaParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void enterNotEqual(BasicJavaParser.NotEqualContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code NotEqual}
-	 * labeled alternative in {@link BasicJavaParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void exitNotEqual(BasicJavaParser.NotEqualContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code Boolean}
-	 * labeled alternative in {@link BasicJavaParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void enterBoolean(BasicJavaParser.BooleanContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Boolean}
-	 * labeled alternative in {@link BasicJavaParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void exitBoolean(BasicJavaParser.BooleanContext ctx);
+	void exitCondition(BasicJavaParser.ConditionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Addition}
 	 * labeled alternative in {@link BasicJavaParser#expression}.

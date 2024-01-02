@@ -32,8 +32,12 @@ public class BasicJavaApp {
 
             if (progVisitor.semanticErrors.isEmpty()) {
                 ExpressionProcessor ep = new ExpressionProcessor(prog.expressions);
-                for (String evaluation : ep.getEvaluationResults()) {
-                    System.out.println(evaluation);
+                try {
+                    for (String evaluation : ep.getEvaluationResults()) {
+                        System.out.println(evaluation);
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
             }
             else {
