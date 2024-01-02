@@ -5,7 +5,7 @@ package antlr;
 }
 
 prog
-    :   (declarating | expression)+ EOF    # Program
+    :   (declarating | expression | if_statement | while_statement)+ EOF    # Program
     ;
 
 declarating
@@ -42,11 +42,13 @@ argumentList
 
 statement
     :   'return' expression ';'
+    |   variableDeclaration
+    |   if_statement
     ;
 
 
 if_statement
-    :   'if' '(' expression ')' '{' statement* '}'
+    :   'if' '(' expression ')' '{' statement* '}' ('else' '{' statement* '}')?
     ;
 
 while_statement

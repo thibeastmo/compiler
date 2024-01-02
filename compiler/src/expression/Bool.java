@@ -1,7 +1,7 @@
 package expression;
 
 public class Bool extends Expression {
-    boolean bool;
+    public boolean bool;
 
     public Bool(boolean bool) {
         this.bool = bool;

@@ -14,8 +14,8 @@ public class BasicJavaApp {
     public static void main(String[] args) {
         if (args == null || args.length < 1) {
             args = new String[1];
+            args[0] = "./src/app/tests/test1.txt"; //to test faster
         }
-        args[0] = "./src/app/tests/test0.txt"; //to test faster
         if (args.length != 1) {
             System.err.print("Usage: file name");
         }

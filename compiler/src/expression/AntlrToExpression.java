@@ -9,6 +9,7 @@ import antlr.BasicJavaBaseVisitor;
 import antlr.BasicJavaParser;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 
 public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     private List<String> vars; //stores all the variables declared in the program so far
@@ -133,14 +134,34 @@ public class AntlrToExpression extends BasicJavaBaseVisitor<Expression> {
     }
 	@Override 
     public Expression visitStatement(BasicJavaParser.StatementContext ctx) {
-        ParseTree child = ctx.children.get(1);
+        int i = 0;
+        ParseTree child = null;
+        do {
+            child = ctx.children.get(i);
+            i++;
+        } while (child == null || child instanceof TerminalNodeImpl);
         return visit(child);
     }
 	@Override 
     public Expression visitIf_statement(BasicJavaParser.If_statementContext ctx) {
-        return visitChildren(ctx);
+        ParseTree conditionChild = ctx.children.get(2);
+
+        BasicJavaParser.StatementContext statementContext = (BasicJavaParser.StatementContext) ctx.children.get(5);
+        Expression ifStatement = visitStatement(statementContext);;
+        Expression elseStatement = null;
+        boolean firstOneFound = false;
+        for (int i = 5; i < ctx.getChildCount() - 1; i++) {
+            if (ctx.children.get(i) instanceof BasicJavaParser.StatementContext) {
+                if (!firstOneFound) firstOneFound = true;
+                else {
+                    elseStatement = visitStatement((BasicJavaParser.StatementContext) ctx.children.get(i));
+                    break;
+                }
+            }
+        }
+        return new IfDeclaration(conditionChild.getText(), ifStatement, elseStatement);
     }
-	@Override 
+	@Override
     public Expression visitWhile_statement(BasicJavaParser.While_statementContext ctx) {
         return visitChildren(ctx);
     }

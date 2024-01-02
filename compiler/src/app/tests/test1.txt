@@ -1,0 +1,8 @@
+int i = 5;
+int j = 7;
+boolean doSum = false;
+if (doSum) {
+    int sum = i + j;
+} else {
+    int minus = i - j;
+}

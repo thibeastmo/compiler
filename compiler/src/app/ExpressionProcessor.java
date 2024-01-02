@@ -26,7 +26,7 @@ public class ExpressionProcessor {
             if (e instanceof VariableDeclaration) {
                 VariableDeclaration decl = (VariableDeclaration)e;
                 values.put(decl.id, decl.value);
-                System.out.println(decl.id + " declard with value " + decl.value);
+                System.out.println(decl.id + " declared with value " + decl.value);
             }
             else if (e instanceof MethodDeclaration) {
                 methods.add((MethodDeclaration) e);
@@ -64,7 +64,7 @@ public class ExpressionProcessor {
             int right = getIntegerFromExpression(add.right);
             result = left - right;
         }
-        else { //method call -> here it makes a copy of the already existing variable and puts it in the same list as the original variable --> after that it gets the evalresult
+        else if (e instanceof MethodCall) { //method call -> here it makes a copy of the already existing variable and puts it in the same list as the original variable --> after that it gets the evalresult
             MethodCall methodCall = (MethodCall) e;
             Optional<MethodDeclaration> optionalMethodDeclaration = methods.stream().filter(m -> m.id.equals(methodCall.methodId)).findFirst();
             if (optionalMethodDeclaration.isEmpty()) {
@@ -79,6 +79,16 @@ public class ExpressionProcessor {
                 values.put(methodVar.id, argumentValue);
             }
             result = getEvalResult(methodDeclaration.statement);
+        }
+        else if (e instanceof IfDeclaration) {
+            IfDeclaration ifDeclaration = (IfDeclaration) e;
+            Object argumentValue = values.get(ifDeclaration.id);
+            if ((Boolean)argumentValue) {
+                result = getEvalResult(ifDeclaration.statement);
+            }
+            else {
+                result = getEvalResult(ifDeclaration.elseStatement);
+            }
         }
 
         return result;
