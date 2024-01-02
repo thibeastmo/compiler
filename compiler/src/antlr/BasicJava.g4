@@ -14,7 +14,7 @@ declarating
     ;
 
 variableDeclaration
-    :   type ID '=' (expression | methodCall) ';'  # Declaration
+    :   type ID '=' (expression | methodCall | condition) ';'  # Declaration
     ;
 
 methodDeclaration
@@ -37,24 +37,34 @@ methodCall
     ;
 
 argumentList
-    :   expression ( ',' expression )*
+    :   (expression | condition) ( ',' ( expression | condition))*
     ;
 
 statement
-    :   'return' expression ';'
+    :   'return' (expression | condition) ';'
     |   variableDeclaration
     |   if_statement
     ;
 
 
 if_statement
-    :   'if' '(' expression ')' '{' statement* '}' ('else' '{' statement* '}')?
+    :   'if' '(' condition ')' '{' statement* '}' ('else' '{' statement* '}')?
     ;
 
 while_statement
-    :   'while' '(' expression ')' '{' statement* '}'
+    :   'while' '(' condition ')' '{' statement* '}'
     ;
 
+
+condition
+    :   expression '<' expression       # LessThan
+    |   expression '>' expression       # GreaterThan
+    |   expression '==' expression      # Equal
+    |   expression '<=' expression      # LessThanOrEqual
+    |   expression '>=' expression      # GreaterThanOrEqual
+    |   expression '!=' expression      # NotEqual
+    |   ID                              # Boolean
+    ;
 
 expression
     :   expression '-' expression   # Subtraction
@@ -69,5 +79,5 @@ expression
 ID      : [a-zA-Z_.]+ ;
 INT     : [0-9]+ ;
 BOOL    : 'true' | 'false' ;
-TEXT  : '"' .*? '"' ;
+TEXT    : '"' .*? '"' ;
 WS      : [ \t\r\n]+ -> skip ;

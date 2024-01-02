@@ -81,6 +81,55 @@ public interface BasicJavaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitWhile_statement(BasicJavaParser.While_statementContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code LessThan}
+	 * labeled alternative in {@link BasicJavaParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLessThan(BasicJavaParser.LessThanContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code GreaterThan}
+	 * labeled alternative in {@link BasicJavaParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGreaterThan(BasicJavaParser.GreaterThanContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Equal}
+	 * labeled alternative in {@link BasicJavaParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEqual(BasicJavaParser.EqualContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code LessThanOrEqual}
+	 * labeled alternative in {@link BasicJavaParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLessThanOrEqual(BasicJavaParser.LessThanOrEqualContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code GreaterThanOrEqual}
+	 * labeled alternative in {@link BasicJavaParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGreaterThanOrEqual(BasicJavaParser.GreaterThanOrEqualContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code NotEqual}
+	 * labeled alternative in {@link BasicJavaParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNotEqual(BasicJavaParser.NotEqualContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Boolean}
+	 * labeled alternative in {@link BasicJavaParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolean(BasicJavaParser.BooleanContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Addition}
 	 * labeled alternative in {@link BasicJavaParser#expression}.
 	 * @param ctx the parse tree
